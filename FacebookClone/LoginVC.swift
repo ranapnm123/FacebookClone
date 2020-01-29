@@ -8,20 +8,22 @@
 
 import UIKit
 
+//codable
+struct LoginResponse : Codable
+{
+    let status : String
+    let message : String
+    let email : String?
+    let firstName : String?
+    let lastName : String?
+    let birthday : String?
+    let gender : String?
+    let id : String?
+}
+
 class LoginVC: UIViewController {
     
-    //codable
-    struct LoginResponse : Codable
-    {
-        let status : String
-        let message : String
-        let email : String?
-        let firstName : String?
-        let lastName : String?
-        let birthday : String?
-        let gender : String?
-        let id : String?
-    }
+    
     
     // ui obj
     @IBOutlet weak var textFieldsView: UIView!
@@ -51,12 +53,21 @@ class LoginVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        
         // declaring notification observation in order to catch UIKeyboardWillShow / UIKeyboardWillHide Notification
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if Helper.getUserDetails()?.id != nil {
+                                                 Helper.instantiateViewController(identifier: "TabBar", animated: true, by: self, completion: nil)
+
+        }
+    }
     // executed always when the Screen's White Space (anywhere excluding objects) tapped
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
@@ -219,12 +230,25 @@ class LoginVC: UIViewController {
                                       password: password) { (response:LoginResponse?, error:Error?) in
                                         if error != nil {
                                             print(response!)
+                                            return
                                         }
-            
-        }
+                                        
+                                                                              DispatchQueue.main.async {
+                                        if response?.status == "200" {
+                                            
+                                            Helper.saveUserDetails(object: response!)
+                                            
+                                            Helper.instantiateViewController(identifier: "TabBar", animated: true, by: self, completion: nil)
+
+                                        } else {
+                                            Helper.showAlert(title: "Error", message: (response?.message)!, in: self)
+                                            }
+                                            
+                                        }
+
         }
     }
-    
+    }
 
 
 }

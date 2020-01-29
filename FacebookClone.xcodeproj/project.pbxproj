@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		13AEAD3223E1E0FC00757BE8 /* HomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13AEAD3123E1E0FC00757BE8 /* HomeVC.swift */; };
 		13F6715F23D75DCD005B3A31 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13F6715E23D75DCD005B3A31 /* AppDelegate.swift */; };
 		13F6716123D75DCD005B3A31 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13F6716023D75DCD005B3A31 /* SceneDelegate.swift */; };
 		13F6716823D75DD2005B3A31 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13F6716723D75DD2005B3A31 /* Assets.xcassets */; };
@@ -19,6 +20,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		13AEAD3123E1E0FC00757BE8 /* HomeVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeVC.swift; sourceTree = "<group>"; };
 		13F6715B23D75DCD005B3A31 /* FacebookClone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FacebookClone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13F6715E23D75DCD005B3A31 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		13F6716023D75DCD005B3A31 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -66,6 +68,7 @@
 				13F6716023D75DCD005B3A31 /* SceneDelegate.swift */,
 				D36ED4E823DEB8F600EB5DCE /* LoginVC.swift */,
 				D36ED4E723DEB8F600EB5DCE /* RegisterVC.swift */,
+				13AEAD3123E1E0FC00757BE8 /* HomeVC.swift */,
 				D36ED4E923DEB8F600EB5DCE /* Helper.swift */,
 				D36ED4EF23DEBE0600EB5DCE /* ApiClient.swift */,
 				D36ED4ED23DEB90B00EB5DCE /* Main.storyboard */,
@@ -148,6 +151,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D36ED4EA23DEB8F600EB5DCE /* RegisterVC.swift in Sources */,
+				13AEAD3223E1E0FC00757BE8 /* HomeVC.swift in Sources */,
 				13F6715F23D75DCD005B3A31 /* AppDelegate.swift in Sources */,
 				D36ED4EC23DEB8F600EB5DCE /* Helper.swift in Sources */,
 				D36ED4EB23DEB8F600EB5DCE /* LoginVC.swift in Sources */,

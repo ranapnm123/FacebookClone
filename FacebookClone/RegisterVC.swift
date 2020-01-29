@@ -12,18 +12,7 @@ import UIKit
 
 class RegisterVC: UIViewController {
 
-    //codable
-    struct RegisterResponse : Codable
-    {
-        let status : String
-        let message : String
-        let email : String?
-        let firstName : String?
-        let lastName : String?
-        let birthday : String?
-        let gender : String?
-        let id : String?
-    }
+   
     
     // cons obj
     @IBOutlet weak var contentView_width: NSLayoutConstraint!
@@ -327,9 +316,22 @@ class RegisterVC: UIViewController {
                                       firstName: firstname,
                                       lastName: lastName,
                                       birthday: birthday,
-                                      gender: String(sender.tag)) { (response:RegisterResponse?, error:Error?) in
+                                      gender: String(sender.tag)) { (response:LoginResponse?, error:Error?) in
                                         if error != nil {
                                             print("\(String(describing: response))")
+                                            return
+                                        }
+                                        
+                                        DispatchQueue.main.async {
+                                        if response?.status == "200" {
+                                        Helper.saveUserDetails(object: response!)
+                                                                                       
+                                                                                                                                                            Helper.instantiateViewController(identifier: "TabBar", animated: true, by: self, completion: nil)
+
+                                        } else {
+                                            Helper.showAlert(title: "Error", message: (response?.message)!, in: self)
+                                            }
+                                            
                                         }
             
         }
