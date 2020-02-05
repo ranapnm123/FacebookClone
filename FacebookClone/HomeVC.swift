@@ -10,23 +10,13 @@ import UIKit
 
 class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
 
-    //codable
-    struct uploadImageResponse : Codable
-    {
-        let status: String
-        let message: String
-        let email: String?
-        let firstName: String?
-        let lastName: String?
-        let birthday: String?
-        let gender: String?
-        let id: String?
-        let cover: String?
-        let avatar: String?
-    }
+   
     
     @IBOutlet weak var coverImageView:UIImageView!
     @IBOutlet weak var profileImageView:UIImageView!
+    @IBOutlet weak var fullNameLabel:UILabel!
+    @IBOutlet weak var addBioBtn:UIButton!
+    @IBOutlet weak var bioLabel:UILabel!
     
     enum imageViewTapped: String {
         case cover = "cover"
@@ -38,10 +28,39 @@ class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePick
     var isProfileAva:Bool?
     
     override func viewDidLoad() {
-        configureProfileImageView()
         super.viewDidLoad()
+
+        configureProfileImageView()
+        loadUser()
         
     }
+    
+    func loadUser() {
+        guard let firstName = Helper.getUserDetails()?.firstName,
+        let lastName = Helper.getUserDetails()?.lastName,
+        let coverImageUrl = Helper.getUserDetails()?.cover,
+        let avatarImageUrl = Helper.getUserDetails()?.avatar,
+        let bio = Helper.getUserDetails()?.bio else { return }
+        
+        fullNameLabel.text = "\(firstName) \(lastName)".capitalized
+       
+        Helper.downloadImage(path: coverImageUrl, showIn: self.coverImageView, placeholderImage: "HomeCover.jpg")
+        
+        Helper.downloadImage(path: avatarImageUrl, showIn: self.profileImageView, placeholderImage: "user.jpg")
+        
+        if bio.isEmpty {
+            bioLabel.isHidden = true
+            addBioBtn.isHidden = false
+            
+        } else {
+            bioLabel.text = bio
+            bioLabel.isHidden = false
+            addBioBtn.isHidden = true
+        }
+        
+       
+    }
+    
     
     func configureProfileImageView() {
         let layer = CALayer()
@@ -144,13 +163,8 @@ class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePick
     func uploadImage(from imageView:UIImageView) {
         guard let id = Helper.getUserDetails()?.id else { return }
         
-        var temp:String?
-        if self.imagViewType! == imageViewTapped.cover.rawValue {
-            temp = "1"
-        } else {
-            temp = "2"
-        }
-        ApiClient.shared.uploadImage(id: id, type: temp!, image: imageView.image!, fileName: self.imagViewType!) { (response: uploadImageResponse?, error) in
+        
+        ApiClient.shared.uploadImage(id: id, type: self.imagViewType!, image: imageView.image!, fileName: self.imagViewType!) { (response: LoginResponse?, error) in
         if error != nil {
            
                    return
@@ -159,7 +173,9 @@ class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePick
              DispatchQueue.main.async {
                if response?.status == "200" {
                    
-                   
+                Helper.saveUserDetails(object: response!)
+                
+                   Helper.showAlert(title: "Success", message: (response?.message)!, in: self)
 
                } else {
                    Helper.showAlert(title: "Error", message: (response?.message)!, in: self)

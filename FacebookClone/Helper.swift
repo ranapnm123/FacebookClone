@@ -95,4 +95,23 @@ class Helper {
         
         return body
     }
+    
+    class func downloadImage(path:String, showIn imageView:UIImageView, placeholderImage:String) {
+        if String(describing: path).isEmpty == false {
+                   DispatchQueue.main.async {
+                       
+                   if let url = URL(string: path ) {
+                       
+                       guard let data = try? Data(contentsOf: url) else { return }
+                       
+                       guard let image = UIImage(data: data) else {
+                           imageView.image = UIImage(named: placeholderImage)
+                           return }
+                       
+                       imageView.image = image
+
+                       }
+                   }
+               }
+    }
 }

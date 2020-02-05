@@ -19,6 +19,9 @@ struct LoginResponse : Codable
     let birthday : String?
     let gender : String?
     let id : String?
+    let cover: String?
+    let avatar: String?
+    let bio: String?
 }
 
 class LoginVC: UIViewController {

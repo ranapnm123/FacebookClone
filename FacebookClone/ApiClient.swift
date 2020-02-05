@@ -77,13 +77,12 @@ class ApiClient {
                 completion(nil, error)
                 return
             }
-            
-            if let data = data {
-                if let decodeResponse = try? JSONDecoder().decode(T.self, from: data) {
+            do {
+                let decodeResponse = try JSONDecoder().decode(T.self, from: data!)
                     completion(decodeResponse, nil)
-                }
-                
-                return
+             
+            } catch {
+                print(error.localizedDescription)
             }
         }.resume()
     }

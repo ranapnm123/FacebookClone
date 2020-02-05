@@ -32,8 +32,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "229"
             endingLineNumber = "229"
-            landmarkName = "loginAction(_:)"
-            landmarkType = "7">
+            landmarkName = "LoginVC"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -46,74 +46,10 @@
             filePath = "FacebookClone/HomeVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "145"
-            endingLineNumber = "145"
-            landmarkName = "uploadImage(from:)"
+            startingLineNumber = "144"
+            endingLineNumber = "144"
+            landmarkName = "showActionSheet()"
             landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "DDCE679F-C78B-4E9C-A6D8-B69DBC415218"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "FacebookClone/ApiClient.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "82"
-            endingLineNumber = "82"
-            landmarkName = "uploadImage(id:type:image:fileName:completion:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "7E4CFF8A-9CED-4913-B9AB-A363B63713FC"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "FacebookClone/ApiClient.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "75"
-            endingLineNumber = "75"
-            landmarkName = "uploadImage(id:type:image:fileName:completion:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "7E4CFF8A-9CED-4913-B9AB-A363B63713FC - 34be6d644f1a28cc"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "FacebookClone.ApiClient.uploadImage&lt;A where A: Swift.Decodable, A: Swift.Encodable&gt;(id: Swift.String, type: Swift.String, image: __C.UIImage, fileName: Swift.String, completion: (Swift.Optional&lt;A&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; ()) -&gt; ()"
-                  moduleName = "FacebookClone"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/ravirana/Documents/Projects/FacebookClone/FacebookClone/ApiClient.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "75"
-                  endingLineNumber = "75"
-                  offsetFromSymbolStart = "3468">
-               </Location>
-               <Location
-                  uuid = "7E4CFF8A-9CED-4913-B9AB-A363B63713FC - 66d7dfb7b9ba8fce"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__C.NSURLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in FacebookClone.ApiClient.uploadImage&lt;A where A: Swift.Decodable, A: Swift.Encodable&gt;(id: Swift.String, type: Swift.String, image: __C.UIImage, fileName: Swift.String, completion: (Swift.Optional&lt;A&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; ()) -&gt; ()"
-                  moduleName = "FacebookClone"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/ravirana/Documents/Projects/FacebookClone/FacebookClone/ApiClient.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "76"
-                  endingLineNumber = "76"
-                  offsetFromSymbolStart = "296">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
