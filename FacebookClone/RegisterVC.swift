@@ -318,7 +318,6 @@ class RegisterVC: UIViewController {
                                       birthday: birthday,
                                       gender: String(sender.tag)) { (response:LoginResponse?, error:Error?) in
                                         if error != nil {
-                                            print("\(String(describing: response))")
                                             return
                                         }
                                         
@@ -326,7 +325,7 @@ class RegisterVC: UIViewController {
                                         if response?.status == "200" {
                                         Helper.saveUserDetails(object: response!)
                                                                                        
-                                                                                                                                                            Helper.instantiateViewController(identifier: "TabBar", animated: true, by: self, completion: nil)
+                                            Helper.instantiateViewController(identifier: "TabBar", animated: true, modalStyle: .fullScreen, by: self, completion: nil)
 
                                         } else {
                                             Helper.showAlert(title: "Error", message: (response?.message)!, in: self)

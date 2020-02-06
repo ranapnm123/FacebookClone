@@ -42,9 +42,9 @@ class Helper {
         vc.present(alert, animated: true, completion: nil)
     }
     
-    class func instantiateViewController(identifier:String, animated:Bool, by vc:UIViewController, completion:(() -> Void)?) {
+    class func instantiateViewController(identifier:String, animated:Bool, modalStyle:UIModalPresentationStyle, by vc:UIViewController, completion:(() -> Void)?) {
         let viewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(identifier: identifier)
-        viewController.modalPresentationStyle = .fullScreen
+        viewController.modalPresentationStyle = modalStyle
         vc.present(viewController, animated: animated, completion: completion)
     }
     
@@ -114,4 +114,5 @@ class Helper {
                    }
                }
     }
+    
 }

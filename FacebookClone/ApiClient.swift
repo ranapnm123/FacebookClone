@@ -62,6 +62,8 @@ class ApiClient {
            }.resume()
        }
     
+    
+    
     func uploadImage<T:Codable>(id:String, type:String, image:UIImage, fileName:String, completion:@escaping(T?, Error?) -> Void) {
         guard let url = NSURL.init(string: "\(baseUrl)/uploadImage.php") else { return }
         let params = ["id":id,"type":type]
@@ -83,6 +85,30 @@ class ApiClient {
              
             } catch {
                 print(error.localizedDescription)
+            }
+        }.resume()
+    }
+    
+    func updateBio<T:Codable>(id:String, bio:String, completion:@escaping (T?, Error?) -> Void) {
+        guard let url = NSURL.init(string: "\(baseUrl)/updateBio.php") else { return }
+        let params = "id=\(id)&bio=\(bio)"
+        
+        var request = URLRequest(url: url as URL)
+        request.httpMethod = "POST"
+        let param = params.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)
+        request.httpBody = param!.data(using: .utf8)
+        
+        URLSession.shared.dataTask(with: request) { (data, response, error) in
+            
+            if error != nil {
+                completion(nil, error)
+                return
+            }
+            if let data = data {
+                if let decodeResponse = try? JSONDecoder().decode(T.self, from: data) {
+                    completion(decodeResponse, nil)
+                }
+                return
             }
         }.resume()
     }

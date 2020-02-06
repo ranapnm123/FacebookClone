@@ -8,6 +8,8 @@
 
 import UIKit
 
+var bioAddedCallback = {(bioText:String) -> () in}
+
 class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
 
    
@@ -30,8 +32,21 @@ class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePick
     override func viewDidLoad() {
         super.viewDidLoad()
 
+//        overrideUserInterfaceStyle = .dark
         configureProfileImageView()
         loadUser()
+        
+        bioAddedCallback = { bio in
+            if bio.isEmpty {
+                self.bioLabel.isHidden = true
+                self.addBioBtn.isHidden = false
+                
+            } else {
+                self.bioLabel.text = bio
+                self.bioLabel.isHidden = false
+                self.addBioBtn.isHidden = true
+            }
+        }
         
     }
     
@@ -169,7 +184,6 @@ class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePick
            
                    return
                }
-                print(response!)
              DispatchQueue.main.async {
                if response?.status == "200" {
                    
@@ -184,6 +198,70 @@ class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePick
                }
         }
         
+    }
+    
+   @IBAction func bioLabelTapped() {
+           let actionSheet = UIAlertController.init(title: nil, message: nil, preferredStyle: .actionSheet)
+           let bio = UIAlertAction.init(title: "New Bio", style: .default) { (action) in
+               Helper.instantiateViewController(identifier: "BioVC", animated: true, modalStyle: .popover, by: self, completion: nil)
+           }
+           
+           let cancel = UIAlertAction.init(title: "Cancel", style: .cancel, handler: nil)
+           let delete = UIAlertAction.init(title: "Delete Bio", style: .destructive) { (action) in
+            self.deleteBio()
+           }
+           actionSheet.addAction(bio)
+           actionSheet.addAction(cancel)
+           actionSheet.addAction(delete)
+           
+           switch self.imagViewType {
+           case imageViewTapped.cover.rawValue :
+               
+               if self.isCoverAva == true {
+                   delete.isEnabled = true
+               } else {
+                   delete.isEnabled = false
+               }
+           case imageViewTapped.avatar.rawValue :
+               
+               if self.isProfileAva == true {
+                   delete.isEnabled = true
+               } else {
+                   delete.isEnabled = false
+               }
+           default: break
+           }
+           
+           present(actionSheet, animated: true, completion: nil)
+           
+       }
+    
+    func deleteBio() {
+        guard let id = Helper.getUserDetails()?.id else { return }
+        
+        ApiClient.shared.updateBio(id: id, bio: "") { (response:LoginResponse?, error) in
+            if error != nil {
+            
+                    return
+                }
+              DispatchQueue.main.async {
+                if response?.status == "200" {
+                    
+                    Helper.saveUserDetails(object: response!)
+                 
+                    bioAddedCallback(response?.bio ?? "")
+                    
+
+                } else {
+                    Helper.showAlert(title: "Error", message: (response?.message)!, in: self)
+                    }
+                    
+                }
+        }
+    }
+    
+    @IBAction func addBioAction() {
+        Helper.instantiateViewController(identifier: "BioVC", animated: true, modalStyle: .overCurrentContext, by: self, completion: nil)
     }
     // MARK: - Table view data source
 

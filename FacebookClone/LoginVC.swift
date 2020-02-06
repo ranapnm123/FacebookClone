@@ -56,7 +56,7 @@ class LoginVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
+//        overrideUserInterfaceStyle = .dark
         
         // declaring notification observation in order to catch UIKeyboardWillShow / UIKeyboardWillHide Notification
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -67,7 +67,7 @@ class LoginVC: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if Helper.getUserDetails()?.id != nil {
-                                                 Helper.instantiateViewController(identifier: "TabBar", animated: true, by: self, completion: nil)
+            Helper.instantiateViewController(identifier: "TabBar", animated: true, modalStyle: .fullScreen, by: self, completion: nil)
 
         }
     }
@@ -232,7 +232,6 @@ class LoginVC: UIViewController {
         ApiClient.shared.loginUser(email: email,
                                       password: password) { (response:LoginResponse?, error:Error?) in
                                         if error != nil {
-                                            print(response!)
                                             return
                                         }
                                         
@@ -241,7 +240,7 @@ class LoginVC: UIViewController {
                                             
                                             Helper.saveUserDetails(object: response!)
                                             
-                                            Helper.instantiateViewController(identifier: "TabBar", animated: true, by: self, completion: nil)
+                                            Helper.instantiateViewController(identifier: "TabBar", animated: true, modalStyle: .fullScreen, by: self, completion: nil)
 
                                         } else {
                                             Helper.showAlert(title: "Error", message: (response?.message)!, in: self)
