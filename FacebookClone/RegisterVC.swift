@@ -323,7 +323,7 @@ class RegisterVC: UIViewController {
                                         
                                         DispatchQueue.main.async {
                                         if response?.status == "200" {
-                                        Helper.saveUserDetails(object: response!)
+                                        Helper.saveUserDetails(object: response!, password: password)
                                                                                        
                                             Helper.instantiateViewController(identifier: "TabBar", animated: true, modalStyle: .fullScreen, by: self, completion: nil)
 

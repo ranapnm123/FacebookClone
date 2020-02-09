@@ -23,24 +23,24 @@ class BioVC: UIViewController, UITextViewDelegate {
         bioTexView.layer.borderColor = UIColor.lightGray.cgColor
         bioTexView.layer.borderWidth = 2.0
         
-        profileImageView.backgroundColor = .black
         profileImageView.layer.cornerRadius = profileImageView.frame.width / 2
+        profileImageView.clipsToBounds = true
+
         // Do any additional setup after loading the view.
         
         loadUser()
     }
     
     func loadUser() {
-           guard let firstName = Helper.getUserDetails()?.firstName,
-           let lastName = Helper.getUserDetails()?.lastName,
-            let avatarImageUrl = Helper.getUserDetails()?.avatar,
-           let bio = Helper.getUserDetails()?.bio else { return }
-           
-           fullNameLabel.text = "\(firstName) \(lastName)".capitalized
-          
-        Helper.downloadImage(path: avatarImageUrl, showIn: self.profileImageView, placeholderImage: "user.jpg")
-
-          
+        
+       guard let firstName = Helper.getUserDetails()?.firstName,
+              let lastName = Helper.getUserDetails()?.lastName,
+               let avatarImageUrl = Helper.getUserDetails()?.avatar else { return }
+              
+             
+        Helper.loadFullname(firstName: firstName, lastName: lastName, showIn: fullNameLabel)
+           Helper.downloadImage(path: avatarImageUrl, showIn: profileImageView, placeholderImage: "user.jpg")
+        
        }
     
     func textViewDidChange(_ textView: UITextView) {
@@ -84,7 +84,7 @@ class BioVC: UIViewController, UITextViewDelegate {
               DispatchQueue.main.async {
                 if response?.status == "200" {
                     
-                    Helper.saveUserDetails(object: response!)
+                    Helper.saveUserDetails(object: response!, password: Helper.getUserDetails()?.password)
                  
 //                    Helper.showAlert(title: "Success", message: (response?.message)!, in: self)
                     self.dismiss(animated: true) {

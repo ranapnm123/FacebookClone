@@ -14,6 +14,7 @@ struct LoginResponse : Codable
     let status : String
     let message : String
     let email : String?
+    var password : String?
     let firstName : String?
     let lastName : String?
     let birthday : String?
@@ -238,7 +239,7 @@ class LoginVC: UIViewController {
                                                                               DispatchQueue.main.async {
                                         if response?.status == "200" {
                                             
-                                            Helper.saveUserDetails(object: response!)
+                                            Helper.saveUserDetails(object: response!, password: password)
                                             
                                             Helper.instantiateViewController(identifier: "TabBar", animated: true, modalStyle: .fullScreen, by: self, completion: nil)
 

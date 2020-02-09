@@ -8,7 +8,9 @@
 
 import UIKit
 
-var bioAddedCallback = {(bioText:String) -> () in}
+var bioAddedCallback = {(bioText:String) -> () in }
+
+var profileUpdateCallback = {() -> () in }
 
 class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
 
@@ -48,6 +50,10 @@ class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePick
             }
         }
         
+        profileUpdateCallback = {
+            self.loadUser()
+        }
+        
     }
     
     func loadUser() {
@@ -59,9 +65,21 @@ class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePick
         
         fullNameLabel.text = "\(firstName) \(lastName)".capitalized
        
+        if coverImageUrl.count > 10 {
+            isCoverAva = true
+        } else {
+            self.coverImageView.image = UIImage(named: "HomeCover.jpg")
+            isCoverAva = false
+        }
         Helper.downloadImage(path: coverImageUrl, showIn: self.coverImageView, placeholderImage: "HomeCover.jpg")
         
-        Helper.downloadImage(path: avatarImageUrl, showIn: self.profileImageView, placeholderImage: "user.jpg")
+        if avatarImageUrl.count > 10 {
+            isProfileAva = true
+        } else {
+            self.profileImageView.image = UIImage(named: "user.png")
+            isProfileAva = false
+        }
+        Helper.downloadImage(path: avatarImageUrl, showIn: self.profileImageView, placeholderImage: "user.png")
         
         if bio.isEmpty {
             bioLabel.isHidden = true
@@ -139,12 +157,17 @@ class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePick
         let cancel = UIAlertAction.init(title: "Cancel", style: .cancel, handler: nil)
         let delete = UIAlertAction.init(title: "Delete", style: .destructive) { (action) in
             switch self.imagViewType {
+            
             case imageViewTapped.cover.rawValue :
                 self.coverImageView.image = #imageLiteral(resourceName: "HomeCover")
                 self.isCoverAva = false
+                self.uploadImage(from: self.coverImageView)
+                
             case imageViewTapped.avatar.rawValue :
                 self.profileImageView.image = #imageLiteral(resourceName: "user")
                 self.isProfileAva = false
+                self.uploadImage(from: self.profileImageView)
+                
             default: break
             }
         }
@@ -176,6 +199,7 @@ class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePick
     }
     
     func uploadImage(from imageView:UIImageView) {
+        
         guard let id = Helper.getUserDetails()?.id else { return }
         
         
@@ -187,7 +211,7 @@ class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePick
              DispatchQueue.main.async {
                if response?.status == "200" {
                    
-                Helper.saveUserDetails(object: response!)
+                Helper.saveUserDetails(object: response!, password: Helper.getUserDetails()?.password)
                 
                    Helper.showAlert(title: "Success", message: (response?.message)!, in: self)
 
@@ -247,7 +271,7 @@ class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePick
               DispatchQueue.main.async {
                 if response?.status == "200" {
                     
-                    Helper.saveUserDetails(object: response!)
+                    Helper.saveUserDetails(object: response!, password: Helper.getUserDetails()?.password)
                  
                     bioAddedCallback(response?.bio ?? "")
                     

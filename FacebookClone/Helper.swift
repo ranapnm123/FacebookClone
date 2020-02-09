@@ -48,9 +48,11 @@ class Helper {
         vc.present(viewController, animated: animated, completion: completion)
     }
     
-    class func saveUserDetails(object:LoginResponse) {
+    class func saveUserDetails(object: LoginResponse, password:String?) {
+        let temp = LoginResponse(status: object.status, message: object.message, email: object.email, password: password, firstName: object.firstName, lastName: object.lastName, birthday: object.birthday, gender: object.gender, id: object.id, cover: object.cover, avatar: object.avatar, bio: object.bio)
+        
     let encoder = JSONEncoder()
-        if let encoded = try? encoder.encode(object) {
+        if let encoded = try? encoder.encode(temp) {
         let defaults = UserDefaults.standard
         defaults.set(encoded, forKey: currentUserDetails)
     }
@@ -67,8 +69,12 @@ class Helper {
         return nil
     }
     
+    class func loadFullname(firstName: String, lastName:String, showIn label:UILabel) {
+        label.text = "\(firstName.capitalized) \(lastName.capitalized)"
+    }
+    
    // MIME for the Image
-    class func body(with parameters: [String: Any]?, filename: String, filePathKey: String?, imageDataKey: Data, boundary: String) -> NSData {
+    class func body(with parameters: [String: Any]?, filename: String, filePathKey: String?, imageDataKey: Data?, boundary: String) -> NSData {
         
         let body = NSMutableData()
         
@@ -89,10 +95,11 @@ class Helper {
         body.append(Data("Content-Disposition: form-data; name=\"\(filePathKey!)\"; filename=\"\(filename)\"\r\n".utf8))
         body.append(Data("Content-Type: \(mimetype)\r\n\r\n".utf8))
         
-        body.append(imageDataKey)
+        if imageDataKey != nil {
+        body.append(imageDataKey!)
         body.append(Data("\r\n".utf8))
         body.append(Data("--\(boundary)--\r\n".utf8))
-        
+        }
         return body
     }
     

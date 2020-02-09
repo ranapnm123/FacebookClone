@@ -71,8 +71,12 @@ class ApiClient {
         var request = URLRequest(url: url as URL)
         request.httpMethod = "POST"
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-        let imageData = image.jpegData(compressionQuality: 0.5)
-        request.httpBody = Helper.body(with: params, filename:"\(fileName).jpg" , filePathKey: "file", imageDataKey: imageData!, boundary: boundary) as Data
+        
+        var imageData = Data()
+        if image != UIImage(named: "HomeCover.jpg") && image != UIImage(named: "user.png") {
+            imageData = image.jpegData(compressionQuality: 0.5)!
+        }
+        request.httpBody = Helper.body(with: params, filename:"\(fileName).jpg" , filePathKey: "file", imageDataKey: imageData, boundary: boundary) as Data
         
         URLSession.shared.dataTask(with: request) { (data, response, error) in
             if error != nil {
@@ -111,5 +115,63 @@ class ApiClient {
                 return
             }
         }.resume()
+    }
+    
+    func updatePost<T:Codable>(userId:String, text:String, imageData:Data?, completion:@escaping(T?, Error?) -> Void) {
+        guard let url = NSURL.init(string: "\(baseUrl)/uploadPost.php") else {
+            return
+        }
+        let params = ["user_id":userId,"text":text]
+        var request = URLRequest(url: url as URL)
+        request.httpMethod = "POST"
+        
+          let boundary = "Boundary-\(NSUUID().uuidString)"
+                    request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+          request.httpBody = Helper.body(with: params, filename:"\(NSUUID().uuidString).jpg" , filePathKey: "file", imageDataKey: imageData ?? nil , boundary: boundary) as Data
+
+        URLSession.shared.dataTask(with: request) { (data, response, error) in
+            if error != nil {
+                completion(nil, error)
+                return
+            }
+            do {
+            guard let data = data  else {
+                completion(nil, error)
+                return
+                }
+                 let decodeResponse = try JSONDecoder().decode(T.self, from: data)
+                    completion(decodeResponse, nil)
+                
+            } catch {
+                    completion(nil, error)
+                }
+                return
+        }.resume()
+    }
+    
+    func updateUser<T:Codable>(id:String, email:String, password:String, isPass:String, fname:String, lName:String, birthday:String, gender:String, completion:@escaping (T?, Error?) -> Void) {
+        guard let url = NSURL.init(string: "\(baseUrl)/updateUser.php") else { return }
+               let params = "id=\(id)&email=\(email)&firstName=\(fname)&lastName=\(lName)&birthday=\(birthday)&gender=\(gender)&newPassword=\(isPass)&password=\(password)"
+               
+               var request = URLRequest(url: url as URL)
+               request.httpMethod = "POST"
+               let param = params.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)
+               request.httpBody = param!.data(using: .utf8)
+               
+               URLSession.shared.dataTask(with: request) { (data, response, error) in
+                   
+                   if error != nil {
+                       completion(nil, error)
+                       return
+                   }
+                   if let data = data {
+                       if let decodeResponse = try? JSONDecoder().decode(T.self, from: data) {
+                           completion(decodeResponse, nil)
+                       } else {
+                        completion(nil, error)
+                    }
+                       return
+                   }
+               }.resume()
     }
 }
