@@ -25,16 +25,21 @@ class ApiClient {
         
         URLSession.shared.dataTask(with: request) { (data, response, error) in
             
-            if error != nil {
+           if error != nil {
                 completion(nil, error)
                 return
             }
-            if let data = data {
-                if let decodeResponse = try? JSONDecoder().decode(T.self, from: data) {
-                    completion(decodeResponse, nil)
-                }
+            do {
+            guard let data = data  else {
+                completion(nil, error)
                 return
-            }
+                }
+                 let decodeResponse = try JSONDecoder().decode(T.self, from: data)
+                    completion(decodeResponse, nil)
+                
+            } catch {
+                    completion(nil, error)
+                }
         }.resume()
     }
     
@@ -145,7 +150,6 @@ class ApiClient {
             } catch {
                     completion(nil, error)
                 }
-                return
         }.resume()
     }
     
@@ -174,4 +178,32 @@ class ApiClient {
                    }
                }.resume()
     }
+    
+    func getPosts<T:Codable>(id:String, offset:String, limit:String, completion:@escaping((T?, Error?) -> Void)) {
+           guard let url = NSURL.init(string: "\(baseUrl)/selectposts.php") else { return }
+           let params = "id=\(id)&offset=\(offset)&limit=\(limit)"
+           
+           var request = URLRequest(url: url as URL)
+           request.httpMethod = "POST"
+           let param = params.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)
+           request.httpBody = param!.data(using: .utf8)
+           
+           URLSession.shared.dataTask(with: request) { (data, response, error) in
+              if error != nil {
+                   completion(nil, error)
+                   return
+               }
+               do {
+               guard let data = data  else {
+                   completion(nil, error)
+                   return
+                   }
+                    let decodeResponse = try JSONDecoder().decode(T.self, from: data)
+                       completion(decodeResponse, nil)
+                   
+               } catch {
+                       completion(nil, error)
+                   }
+           }.resume()
+       }
 }

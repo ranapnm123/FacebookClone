@@ -15,7 +15,23 @@ var profileUpdateCallback = {() -> () in }
 class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
 
    
-    
+    //codable
+       struct postCodable: Codable {
+           let id: Int
+           let user_id: Int
+           let text: String?
+           let picture: String?
+           let date_created: String
+           let firstName: String
+           let lastName: String
+           let cover: String?
+           let avatar: String?
+       }
+       
+       struct userPostResponse:Codable {
+           let posts: [postCodable]
+       }
+       
     @IBOutlet weak var coverImageView:UIImageView!
     @IBOutlet weak var profileImageView:UIImageView!
     @IBOutlet weak var fullNameLabel:UILabel!
@@ -30,6 +46,23 @@ class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePick
     var imagViewType:String?
     var isCoverAva:Bool?
     var isProfileAva:Bool?
+    
+    //params for post
+    struct Post {
+        let postId: String
+        let postUserId: String
+        let postText: String
+        let postPicture: String
+        let postdateCreated: String
+        let userFirstName: String
+        let userLastName: String
+        let userCover: String
+        let userAvatar: String
+    }
+    
+    var posts = [Post]()
+    var skip = 0
+    var limit = 5
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,7 +86,8 @@ class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePick
         profileUpdateCallback = {
             self.loadUser()
         }
-        
+        loadPosts(offset: skip, limit: limit)
+
     }
     
     func loadUser() {
@@ -290,14 +324,72 @@ class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePick
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
-    }
+           return posts.count
+       }
+       
+       override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+           let picture = posts[indexPath.row]
+           
+           if picture.postPicture.isEmpty {
+               let emptyCell = tableView.dequeueReusableCell(withIdentifier: "NoPicCell", for: indexPath) as? NoPicCell
+               
+               emptyCell?.fullNameLabel.text = "\(picture.userFirstName.capitalized) \(picture.userLastName.capitalized)"
+               
+               emptyCell?.dateLabel.text = picture.postdateCreated
+               
+               emptyCell?.postTextLabel.text = picture.postText
+               
+               return emptyCell!
+               
+           } else {
+               let Cell = tableView.dequeueReusableCell(withIdentifier: "PicCell", for: indexPath) as? PicCell
+               
+               Cell?.fullNameLabel.text = "\(picture.userFirstName.capitalized) \(picture.userLastName.capitalized)"
+               
+               Cell?.dateLabel.text = picture.postdateCreated
+               
+               Cell?.postTextLabel.text = picture.postText
+               
+//               Helper.downloadImageFromUrl(path: picture.postPicture, showIn: Cell!.postImageView) { value in
+            
+                   
+//               }
+            Cell!.postImageView.downloaded(from: picture.postPicture, contentMode: .scaleToFill)
+               
+               return Cell!
+           }
+           
+           return UITableViewCell()
+       }
+
+       func loadPosts(offset: Int, limit: Int) {
+           
+           guard let id = Helper.getUserDetails()?.id else { return }
+
+           ApiClient.shared.getPosts(id: id, offset: String(offset), limit: String(limit)) { (response:userPostResponse?, error) in
+               if error != nil {
+                   Helper.showAlert(title: "Error", message: error!.localizedDescription, in: self)
+                       return
+                   }
+                 DispatchQueue.main.async {
+                   print("posts == \(response!)")
+                   
+                   for object in response!.posts {
+                       let post = Post(postId: String(object.id), postUserId: String(object.user_id), postText: object.text!, postPicture: object.picture!, postdateCreated: object.date_created, userFirstName: object.firstName, userLastName: object.lastName, userCover: object.cover!, userAvatar: object.avatar!)
+                       
+                       self.posts.append(post)
+                   }
+                   self.tableView.reloadData()
+                   self.skip = self.posts.count
+                   }
+           }
+           
+           
+       }
 
     
 }

@@ -7,22 +7,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "612A1075-FF74-4311-8C54-AD809A6CD636"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "FacebookClone/PostVC.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "143"
-            endingLineNumber = "143"
-            landmarkName = "shareAction(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "617CDA59-DA0C-4266-B974-4E041952B3D6"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
@@ -78,8 +62,8 @@
             filePath = "FacebookClone/HomeVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "206"
-            endingLineNumber = "206"
+            startingLineNumber = "240"
+            endingLineNumber = "240"
             landmarkName = "uploadImage(from:)"
             landmarkType = "7">
             <Locations>
@@ -94,8 +78,8 @@
                   urlString = "file:///Users/ravirana/Documents/Projects/FacebookClone/FacebookClone/HomeVC.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "206"
-                  endingLineNumber = "206"
+                  startingLineNumber = "240"
+                  endingLineNumber = "240"
                   offsetFromSymbolStart = "473">
                </Location>
                <Location
@@ -109,9 +93,89 @@
                   urlString = "file:///Users/ravirana/Documents/Projects/FacebookClone/FacebookClone/HomeVC.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "207"
-                  endingLineNumber = "207"
+                  startingLineNumber = "241"
+                  endingLineNumber = "241"
                   offsetFromSymbolStart = "189">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "F1563B46-A72A-44F5-B586-2F8C81A32967"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FacebookClone/Helper.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "132"
+            endingLineNumber = "132"
+            landmarkName = "downloadImageFromUrl(path:showIn:completion:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "819D40EF-2D59-4F71-B004-9EFA4F10D120"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FacebookClone/Helper.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "128"
+            endingLineNumber = "128"
+            landmarkName = "downloadImageFromUrl(path:showIn:completion:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "56A83C9B-10D3-4443-BB59-4B78D8BF3E8C"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FacebookClone/Helper.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "126"
+            endingLineNumber = "126"
+            landmarkName = "downloadImageFromUrl(path:showIn:completion:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "56A83C9B-10D3-4443-BB59-4B78D8BF3E8C - 7490db42fc46666c"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "static FacebookClone.Helper.downloadImageFromUrl(path: Swift.String, showIn: __C.UIImageView, completion: (Swift.Bool) -&gt; ()) -&gt; ()"
+                  moduleName = "FacebookClone"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/ravirana/Documents/Projects/FacebookClone/FacebookClone/Helper.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "126"
+                  endingLineNumber = "126"
+                  offsetFromSymbolStart = "252">
+               </Location>
+               <Location
+                  uuid = "56A83C9B-10D3-4443-BB59-4B78D8BF3E8C - 4f723f2816079147"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__C.NSURLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in static FacebookClone.Helper.downloadImageFromUrl(path: Swift.String, showIn: __C.UIImageView, completion: (Swift.Bool) -&gt; ()) -&gt; ()"
+                  moduleName = "FacebookClone"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/ravirana/Documents/Projects/FacebookClone/FacebookClone/Helper.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "128"
+                  endingLineNumber = "128"
+                  offsetFromSymbolStart = "262">
                </Location>
             </Locations>
          </BreakpointContent>
