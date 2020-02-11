@@ -15,9 +15,58 @@ class PicCell: UITableViewCell {
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var postTextLabel: UILabel!
     @IBOutlet weak var postImageView: UIImageView!
+    
+    var profileImageUrl: String? {
+           didSet {
+               URLSession(configuration: .default).dataTask(with: URL(string:profileImageUrl!)!) { (data, response, error) in
+                   if error != nil {
+                       if let image = UIImage(named: "user.png") {
+                           Global.postAvas.append(image)
+                           DispatchQueue.main.async {
+                               self.profileImageView.image = image
+                           }
+                       }
+                   }
+                   
+                   if let image = UIImage(data: data!) {
+                       Global.postAvas.append(image)
+                       DispatchQueue.main.async {
+                           self.profileImageView.image = image
+                       }
+                   }
+                   
+               }.resume()
+           }
+       }
+    
+    var postPictureUrl: String? {
+        didSet {
+            URLSession(configuration: .default).dataTask(with: URL(string:postPictureUrl!)!) { (data, response, error) in
+                if error != nil {
+                    if let image = UIImage(named: "user.png") {
+                        Global.postPicture.append(image)
+                        DispatchQueue.main.async {
+                            self.postImageView.image = image
+                        }
+                    }
+                }
+                
+                if let image = UIImage(data: data!) {
+                    Global.postPicture.append(image)
+                    DispatchQueue.main.async {
+                        self.postImageView.image = image
+                    }
+                }
+                
+            }.resume()
+        }
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        profileImageView.layer.cornerRadius = profileImageView.frame.size.width / 2
+        profileImageView.clipsToBounds = true
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

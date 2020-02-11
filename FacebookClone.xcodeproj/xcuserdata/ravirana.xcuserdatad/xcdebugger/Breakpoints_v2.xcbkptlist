@@ -62,8 +62,8 @@
             filePath = "FacebookClone/HomeVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "240"
-            endingLineNumber = "240"
+            startingLineNumber = "246"
+            endingLineNumber = "246"
             landmarkName = "uploadImage(from:)"
             landmarkType = "7">
             <Locations>
@@ -78,8 +78,8 @@
                   urlString = "file:///Users/ravirana/Documents/Projects/FacebookClone/FacebookClone/HomeVC.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "240"
-                  endingLineNumber = "240"
+                  startingLineNumber = "246"
+                  endingLineNumber = "246"
                   offsetFromSymbolStart = "473">
                </Location>
                <Location
@@ -93,8 +93,8 @@
                   urlString = "file:///Users/ravirana/Documents/Projects/FacebookClone/FacebookClone/HomeVC.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "241"
-                  endingLineNumber = "241"
+                  startingLineNumber = "247"
+                  endingLineNumber = "247"
                   offsetFromSymbolStart = "189">
                </Location>
             </Locations>
@@ -178,6 +178,22 @@
                   offsetFromSymbolStart = "262">
                </Location>
             </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "ADBB8BF3-B535-4215-B472-8747D1A55C37"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FacebookClone/HomeVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "411"
+            endingLineNumber = "411"
+            landmarkName = "loadMore(offset:limit:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

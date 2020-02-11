@@ -12,6 +12,10 @@ var bioAddedCallback = {(bioText:String) -> () in }
 
 var profileUpdateCallback = {() -> () in }
 
+struct Global {
+        static var postAvas = [UIImage]()
+        static var postPicture = [UIImage]()
+}
 class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
 
    
@@ -46,6 +50,8 @@ class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePick
     var imagViewType:String?
     var isCoverAva:Bool?
     var isProfileAva:Bool?
+    var isLoading = false
+    
     
     //params for post
     struct Post {
@@ -62,7 +68,7 @@ class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePick
     
     var posts = [Post]()
     var skip = 0
-    var limit = 5
+    var limit = 2
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -343,27 +349,36 @@ class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePick
                
                emptyCell?.postTextLabel.text = picture.postText
                
+                if posts.count != Global.postAvas.count {
+                    emptyCell?.profileImageUrl = picture.userAvatar
+                } else {
+                    emptyCell?.profileImageView.image = Global.postAvas[indexPath.row]
+                }
+               Global.postPicture.append(UIImage())
                return emptyCell!
                
            } else {
-               let Cell = tableView.dequeueReusableCell(withIdentifier: "PicCell", for: indexPath) as? PicCell
+               let cell = tableView.dequeueReusableCell(withIdentifier: "PicCell", for: indexPath) as? PicCell
                
-               Cell?.fullNameLabel.text = "\(picture.userFirstName.capitalized) \(picture.userLastName.capitalized)"
+               cell?.fullNameLabel.text = "\(picture.userFirstName.capitalized) \(picture.userLastName.capitalized)"
                
-               Cell?.dateLabel.text = picture.postdateCreated
+               cell?.dateLabel.text = picture.postdateCreated
                
-               Cell?.postTextLabel.text = picture.postText
+               cell?.postTextLabel.text = picture.postText
                
-//               Helper.downloadImageFromUrl(path: picture.postPicture, showIn: Cell!.postImageView) { value in
+                
             
-                   
-//               }
-            Cell!.postImageView.downloaded(from: picture.postPicture, contentMode: .scaleToFill)
+            if posts.count != Global.postPicture.count {
+                cell?.profileImageUrl = picture.userAvatar
+                cell?.postPictureUrl = picture.postPicture
+            } else {
+                cell?.profileImageView.image = Global.postAvas[indexPath.row]
+                cell?.postImageView.image = Global.postPicture[indexPath.row]
+            }
                
-               return Cell!
+               return cell!
            }
            
-           return UITableViewCell()
        }
 
        func loadPosts(offset: Int, limit: Int) {
@@ -384,12 +399,50 @@ class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePick
                        self.posts.append(post)
                    }
                    self.tableView.reloadData()
-                   self.skip = self.posts.count
+                    self.skip += response!.posts.count
                    }
            }
            
            
        }
 
-    
+    func loadMore(offset: Int, limit: Int) {
+        
+        isLoading = true
+        guard let id = Helper.getUserDetails()?.id else { return }
+
+        ApiClient.shared.getPosts(id: id, offset: String(offset), limit: String(limit)) { (response:userPostResponse?, error) in
+            if error != nil {
+                self.isLoading = false
+                    return
+                }
+              DispatchQueue.main.async {
+                print("posts == \(response!)")
+                
+                self.tableView.beginUpdates()
+                for object in response!.posts {
+                    let post = Post(postId: String(object.id), postUserId: String(object.user_id), postText: object.text!, postPicture: object.picture!, postdateCreated: object.date_created, userFirstName: object.firstName, userLastName: object.lastName, userCover: object.cover!, userAvatar: object.avatar!)
+                    
+                    self.posts.append(post)
+                    
+                    let lastSectionIndex = self.tableView.numberOfSections - 1
+                    let lastRowIndex = self.tableView.numberOfRows(inSection: lastSectionIndex)
+                    let pathToLastRow = IndexPath(row: lastRowIndex, section: lastSectionIndex)
+                    self.tableView.insertRows(at: [pathToLastRow], with: .fade)
+                }
+                self.tableView.endUpdates()
+                self.isLoading = false
+                self.skip = self.posts.count
+                }
+        }
+        
+        
+    }
+
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let height = tableView.contentOffset.y - tableView.contentSize.height + 60
+        if ((height > -tableView.frame.height) && isLoading == false) {
+            loadMore(offset: skip, limit: limit)
+        }
+    }
 }
