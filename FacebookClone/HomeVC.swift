@@ -11,6 +11,7 @@ import UIKit
 var bioAddedCallback = {(bioText:String) -> () in }
 
 var profileUpdateCallback = {() -> () in }
+var newPostAddedCallback = {() -> () in }
 
 struct Global {
         static var postAvas = [UIImage]()
@@ -30,11 +31,17 @@ class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePick
            let lastName: String
            let cover: String?
            let avatar: String?
+           let liked: String?
        }
        
        struct userPostResponse:Codable {
            let posts: [postCodable]
        }
+    
+    struct likeCodable: Codable {
+        let status: String
+        let message: String
+    }
        
     @IBOutlet weak var coverImageView:UIImageView!
     @IBOutlet weak var profileImageView:UIImageView!
@@ -55,7 +62,7 @@ class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePick
     
     //params for post
     struct Post {
-        let postId: String
+        let postId: String?
         let postUserId: String
         let postText: String
         let postPicture: String
@@ -64,11 +71,12 @@ class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePick
         let userLastName: String
         let userCover: String
         let userAvatar: String
+        let liked:String
     }
     
     var posts = [Post]()
     var skip = 0
-    var limit = 2
+    var limit = 4
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -91,6 +99,10 @@ class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePick
         
         profileUpdateCallback = {
             self.loadUser()
+        }
+        
+        newPostAddedCallback = {
+            self.loadPosts(offset: 0, limit: self.skip + 1)
         }
         loadPosts(offset: skip, limit: limit)
 
@@ -340,6 +352,7 @@ class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePick
        override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
            let picture = posts[indexPath.row]
            
+       
            if picture.postPicture.isEmpty {
                let emptyCell = tableView.dequeueReusableCell(withIdentifier: "NoPicCell", for: indexPath) as? NoPicCell
                
@@ -349,12 +362,14 @@ class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePick
                
                emptyCell?.postTextLabel.text = picture.postText
                
-                if posts.count != Global.postAvas.count {
+//                if posts.count != Global.postAvas.count {
                     emptyCell?.profileImageUrl = picture.userAvatar
-                } else {
-                    emptyCell?.profileImageView.image = Global.postAvas[indexPath.row]
-                }
-               Global.postPicture.append(UIImage())
+//                } else {
+//                    emptyCell?.profileImageView.image = Global.postAvas[indexPath.row]
+//                }
+//               Global.postPicture.append(UIImage())
+            emptyCell?.likeButton.tag = indexPath.row
+
                return emptyCell!
                
            } else {
@@ -368,21 +383,32 @@ class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePick
                
                 
             
-            if posts.count != Global.postPicture.count {
+//            if posts.count != Global.postPicture.count {
                 cell?.profileImageUrl = picture.userAvatar
                 cell?.postPictureUrl = picture.postPicture
-            } else {
-                cell?.profileImageView.image = Global.postAvas[indexPath.row]
-                cell?.postImageView.image = Global.postPicture[indexPath.row]
-            }
-               
+//            } else {
+//                cell?.profileImageView.image = Global.postAvas[indexPath.row]
+//                cell?.postImageView.image = Global.postPicture[indexPath.row]
+//            }
+            cell?.likeButton.tag = indexPath.row
                return cell!
            }
            
+        
        }
 
+    override func tableView(_ tableView: UITableView,
+     willDisplay cell: UITableViewCell,
+     forRowAt indexPath: IndexPath)
+    {
+     // At the bottom...
+     if (indexPath.row == self.posts.count - 1) {
+     loadMore(offset: skip, limit: limit) // network request to get more data
+     }
+    }
+    
        func loadPosts(offset: Int, limit: Int) {
-           
+        self.posts.removeAll()
            guard let id = Helper.getUserDetails()?.id else { return }
 
            ApiClient.shared.getPosts(id: id, offset: String(offset), limit: String(limit)) { (response:userPostResponse?, error) in
@@ -394,7 +420,7 @@ class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePick
                    print("posts == \(response!)")
                    
                    for object in response!.posts {
-                       let post = Post(postId: String(object.id), postUserId: String(object.user_id), postText: object.text!, postPicture: object.picture!, postdateCreated: object.date_created, userFirstName: object.firstName, userLastName: object.lastName, userCover: object.cover!, userAvatar: object.avatar!)
+                    let post = Post(postId: String(object.id), postUserId: String(object.user_id), postText: object.text!, postPicture: object.picture!, postdateCreated: object.date_created, userFirstName: object.firstName, userLastName: object.lastName, userCover: object.cover!, userAvatar: object.avatar!, liked: object.liked!)
                        
                        self.posts.append(post)
                    }
@@ -406,43 +432,55 @@ class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePick
            
        }
 
-    func loadMore(offset: Int, limit: Int) {
-        
-        isLoading = true
-        guard let id = Helper.getUserDetails()?.id else { return }
+        func loadMore(offset: Int, limit: Int) {
+            
+            isLoading = true
+            guard let id = Helper.getUserDetails()?.id else { return }
 
-        ApiClient.shared.getPosts(id: id, offset: String(offset), limit: String(limit)) { (response:userPostResponse?, error) in
+            ApiClient.shared.getPosts(id: id, offset: String(offset), limit: String(limit)) { (response:userPostResponse?, error) in
+                if error != nil {
+                    self.isLoading = false
+                        return
+                    }
+                DispatchQueue.main.async {
+                    print("posts == \(response!)")
+                    
+                    self.tableView.beginUpdates()
+                    for (index, object) in response!.posts.enumerated() {
+                        let post = Post(postId: String(object.id), postUserId: String(object.user_id), postText: object.text!, postPicture: object.picture!, postdateCreated: object.date_created, userFirstName: object.firstName, userLastName: object.lastName, userCover: object.cover!, userAvatar: object.avatar!, liked: object.liked!)
+                        
+                        self.posts.append(post)
+                        
+                       let lastSectionIndex = self.tableView.numberOfSections - 1
+                        let lastRowIndex = self.tableView.numberOfRows(inSection: lastSectionIndex)
+                        
+                        let pathToLastRow = IndexPath(row: lastRowIndex + index, section: lastSectionIndex)
+                        self.tableView.insertRows(at: [pathToLastRow], with: .fade)
+                    }
+                    self.tableView.endUpdates()
+                    self.isLoading = false
+                    self.skip = self.posts.count
+                    }
+            }
+        }
+    @IBAction func likeButtonAction(_ sender: UIButton) {
+        sender.setImage(UIImage(named: "like.png"), for: .normal)
+        
+        
+        guard let id = Helper.getUserDetails()?.id,
+            let postId = self.posts[sender.tag].postId else { return}
+        
+        ApiClient.shared.likePost(userId: id, postId: postId, action: "insert") { (response:likeCodable?, error) in
+
             if error != nil {
-                self.isLoading = false
+                Helper.showAlert(title: "Error", message: error!.localizedDescription, in: self)
                     return
                 }
               DispatchQueue.main.async {
-                print("posts == \(response!)")
-                
-                self.tableView.beginUpdates()
-                for object in response!.posts {
-                    let post = Post(postId: String(object.id), postUserId: String(object.user_id), postText: object.text!, postPicture: object.picture!, postdateCreated: object.date_created, userFirstName: object.firstName, userLastName: object.lastName, userCover: object.cover!, userAvatar: object.avatar!)
-                    
-                    self.posts.append(post)
-                    
-                    let lastSectionIndex = self.tableView.numberOfSections - 1
-                    let lastRowIndex = self.tableView.numberOfRows(inSection: lastSectionIndex)
-                    let pathToLastRow = IndexPath(row: lastRowIndex, section: lastSectionIndex)
-                    self.tableView.insertRows(at: [pathToLastRow], with: .fade)
-                }
-                self.tableView.endUpdates()
-                self.isLoading = false
-                self.skip = self.posts.count
-                }
-        }
-        
-        
-    }
+//                Helper.showAlert(title: "like", message: response!.message, in: self)
 
-    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let height = tableView.contentOffset.y - tableView.contentSize.height + 60
-        if ((height > -tableView.frame.height) && isLoading == false) {
-            loadMore(offset: skip, limit: limit)
+                }
         }
     }
+    
 }

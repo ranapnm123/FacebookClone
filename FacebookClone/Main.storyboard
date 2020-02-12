@@ -587,6 +587,22 @@
             </objects>
             <point key="canvasLocation" x="2125.36231884058" y="132.47282608695653"/>
         </scene>
+        <!--View Controller-->
+        <scene sceneID="yjK-46-ybg">
+            <objects>
+                <viewController id="8Cs-bt-Iui" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="OBK-jp-WFx">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="Ro2-jt-DSn"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="Swq-2i-SWf"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="nNS-Ak-gWR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-767" y="878"/>
+        </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="Ovs-ff-lEf">
             <objects>
@@ -597,14 +613,14 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBar>
                     <connections>
-                        <segue destination="Um3-dR-Nuq" kind="relationship" relationship="viewControllers" id="njV-dJ-mTl"/>
+                        <segue destination="FaU-Ic-CO1" kind="relationship" relationship="viewControllers" id="njV-dJ-mTl"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pPS-Wl-EsL" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="171" y="878"/>
         </scene>
-        <!--Item-->
+        <!--HomeVC-->
         <scene sceneID="r3T-kS-g9d">
             <objects>
                 <tableViewController id="Um3-dR-Nuq" customClass="HomeVC" customModule="FacebookClone" customModuleProvider="target" sceneMemberID="viewController">
@@ -807,13 +823,23 @@
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K8q-ZL-z0M">
-                                            <rect key="frame" x="10" y="129" width="46" height="30"/>
-                                            <state key="normal" title="Button"/>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K8q-ZL-z0M">
+                                            <rect key="frame" x="10" y="134" width="58" height="25"/>
+                                            <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="15"/>
+                                            <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <state key="normal" title=" Like" image="unlike">
+                                                <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="likeButtonAction:" destination="Um3-dR-Nuq" eventType="touchUpInside" id="3qb-Ud-qwk"/>
+                                            </connections>
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="C6h-3b-gc0">
-                                            <rect key="frame" x="70" y="129" width="46" height="30"/>
+                                            <rect key="frame" x="82" y="129" width="46" height="30"/>
                                             <state key="normal" title="Button"/>
+                                            <connections>
+                                                <segue destination="8Cs-bt-Iui" kind="show" id="THD-gQ-rqe"/>
+                                            </connections>
                                         </button>
                                     </subviews>
                                     <constraints>
@@ -838,6 +864,7 @@
                                 <connections>
                                     <outlet property="dateLabel" destination="gtu-0X-mCC" id="7c0-UL-GLo"/>
                                     <outlet property="fullNameLabel" destination="qqX-TD-f0x" id="5lO-Wj-En3"/>
+                                    <outlet property="likeButton" destination="K8q-ZL-z0M" id="xMh-4M-2uj"/>
                                     <outlet property="postTextLabel" destination="8DZ-5C-zIA" id="DBA-QM-6S8"/>
                                     <outlet property="profileImageView" destination="MCV-MO-im4" id="aA1-nx-9g6"/>
                                 </connections>
@@ -881,13 +908,23 @@
                                                 <constraint firstAttribute="height" constant="394" id="hbq-ZI-g0n"/>
                                             </constraints>
                                         </imageView>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eFo-Mh-v6e">
-                                            <rect key="frame" x="10" y="518" width="46" height="30"/>
-                                            <state key="normal" title="Button"/>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eFo-Mh-v6e">
+                                            <rect key="frame" x="10" y="523" width="58" height="25"/>
+                                            <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="15"/>
+                                            <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <state key="normal" title=" Like" image="unlike">
+                                                <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="likeButtonAction:" destination="Um3-dR-Nuq" eventType="touchUpInside" id="9iJ-hy-kEE"/>
+                                            </connections>
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qDt-1C-r9i">
-                                            <rect key="frame" x="70" y="518" width="46" height="30"/>
+                                            <rect key="frame" x="82" y="518" width="46" height="30"/>
                                             <state key="normal" title="Button"/>
+                                            <connections>
+                                                <segue destination="8Cs-bt-Iui" kind="show" id="xiq-Hv-vKb"/>
+                                            </connections>
                                         </button>
                                     </subviews>
                                     <constraints>
@@ -916,6 +953,7 @@
                                 <connections>
                                     <outlet property="dateLabel" destination="WLZ-cG-VCA" id="h5m-8J-aDd"/>
                                     <outlet property="fullNameLabel" destination="F4c-en-MtO" id="5S2-lB-dPp"/>
+                                    <outlet property="likeButton" destination="eFo-Mh-v6e" id="rvv-gJ-t29"/>
                                     <outlet property="postImageView" destination="n0r-yh-YGC" id="Pdc-8W-SsH"/>
                                     <outlet property="postTextLabel" destination="hn6-Pr-oMc" id="rVz-Zk-e2e"/>
                                     <outlet property="profileImageView" destination="3gI-k7-th3" id="dsO-Vf-86L"/>
@@ -927,7 +965,7 @@
                             <outlet property="delegate" destination="Um3-dR-Nuq" id="IES-Rn-TCU"/>
                         </connections>
                     </tableView>
-                    <tabBarItem key="tabBarItem" title="Item" id="sxb-sL-URl"/>
+                    <navigationItem key="navigationItem" id="aAe-OW-Juj"/>
                     <connections>
                         <outlet property="addBioBtn" destination="rgF-c5-HPG" id="a2P-SL-G0J"/>
                         <outlet property="bioLabel" destination="5M7-Eu-hPw" id="DdI-4Q-5Gi"/>
@@ -953,7 +991,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="1066.6666666666667" y="877.98913043478262"/>
+            <point key="canvasLocation" x="1973.913043478261" y="877.98913043478262"/>
         </scene>
         <!--Post-->
         <scene sceneID="zaw-SG-YRi">
@@ -1170,7 +1208,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WW8-6v-QeI" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2873.913043478261" y="872.28260869565224"/>
+            <point key="canvasLocation" x="3781.1594202898555" y="872.28260869565224"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="yCZ-xy-ooH">
@@ -1188,7 +1226,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sPE-FD-oxf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1966.6666666666667" y="872.28260869565224"/>
+            <point key="canvasLocation" x="2873.913043478261" y="872.28260869565224"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Xdc-jw-Yf1">
@@ -1464,6 +1502,24 @@
             </objects>
             <point key="canvasLocation" x="170" y="1630"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="kF4-RE-kEE">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="FaU-Ic-CO1" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="" image="homeIcon" id="sxb-sL-URl"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="YFu-7u-eD1">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="Um3-dR-Nuq" kind="relationship" relationship="rootViewController" id="qMr-66-sfm"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7i8-78-iMy" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1066.6666666666667" y="877.98913043478262"/>
+        </scene>
     </scenes>
     <resources>
         <image name="Cover" width="1125" height="693"/>
@@ -1476,6 +1532,11 @@
         <image name="More" width="150" height="150"/>
         <image name="Post" width="150" height="150"/>
         <image name="WhiteIcon" width="248" height="240"/>
+        <image name="homeIcon" width="25" height="25"/>
+        <image name="unlike" width="25" height="25"/>
         <image name="user" width="300" height="300"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="THD-gQ-rqe"/>
+    </inferredMetricsTieBreakers>
 </document>

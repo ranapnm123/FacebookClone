@@ -147,8 +147,9 @@ class PostVC: UIViewController, UITextViewDelegate, UIImagePickerControllerDeleg
                           
                             if response?.status == "200" {
                                 
-                           Helper.showAlert(title: "Success", message: (response?.message)!, in: self)
-
+                                self.dismiss(animated: true) {
+                                newPostAddedCallback()
+                                }
                             } else {
                                 Helper.showAlert(title: "Error", message: (response?.message)!, in: self)
                                 }

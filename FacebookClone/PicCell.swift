@@ -16,9 +16,11 @@ class PicCell: UITableViewCell {
     @IBOutlet weak var postTextLabel: UILabel!
     @IBOutlet weak var postImageView: UIImageView!
     
+    @IBOutlet weak var likeButton: UIButton!
     var profileImageUrl: String? {
            didSet {
-               URLSession(configuration: .default).dataTask(with: URL(string:profileImageUrl!)!) { (data, response, error) in
+            if profileImageUrl!.count > 0 {
+               URLSession(configuration: .default).dataTask(with: URL(string:profileImageUrl ?? " ")!) { (data, response, error) in
                    if error != nil {
                        if let image = UIImage(named: "user.png") {
                            Global.postAvas.append(image)
@@ -37,6 +39,7 @@ class PicCell: UITableViewCell {
                    
                }.resume()
            }
+        }
        }
     
     var postPictureUrl: String? {
