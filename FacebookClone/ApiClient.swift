@@ -234,4 +234,90 @@ class ApiClient {
                       }
               }.resume()
           }
+    
+    func insertComment<T:Codable>(userId:String, postId:String, action:String, comment:String, completion:@escaping((T?, Error?) -> Void)) {
+        guard let url = NSURL.init(string: "\(baseUrl)/comments.php") else { return }
+        let params = "user_id=\(userId)&post_id=\(postId)&action=\(action)&comment=\(comment)"
+        
+        var request = URLRequest(url: url as URL)
+        request.httpMethod = "POST"
+        let param = params.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)
+        request.httpBody = param!.data(using: .utf8)
+        
+        URLSession.shared.dataTask(with: request) { (data, response, error) in
+           if error != nil {
+                completion(nil, error)
+                return
+            }
+            do {
+            guard let data = data  else {
+                completion(nil, error)
+                return
+                }
+                 let decodeResponse = try JSONDecoder().decode(T.self, from: data)
+                    completion(decodeResponse, nil)
+                
+            } catch {
+                    completion(nil, error)
+                }
+        }.resume()
+    }
+    
+    func getPostComments<T:Codable>(postId:String, offset:String, limit:String, action:String, completion:@escaping((T?, Error?) -> Void)) {
+           guard let url = NSURL.init(string: "\(baseUrl)/comments.php") else { return }
+           let params = "post_id=\(postId)&action=\(action)&offset=\(offset)&limit=\(limit)"
+
+           var request = URLRequest(url: url as URL)
+           request.httpMethod = "POST"
+           let param = params.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)
+           request.httpBody = param!.data(using: .utf8)
+           
+           URLSession.shared.dataTask(with: request) { (data, response, error) in
+              if error != nil {
+                   completion(nil, error)
+                   return
+               }
+               do {
+               guard let data = data  else {
+                   completion(nil, error)
+                   return
+                   }
+                    let decodeResponse = try JSONDecoder().decode(T.self, from: data)
+                       completion(decodeResponse, nil)
+                   
+               } catch {
+                       completion(nil, error)
+                   }
+           }.resume()
+       }
+    
+    func deleteComment<T:Codable>(commentId:String, action:String, completion:@escaping((T?, Error?) -> Void)) {
+        guard let url = NSURL.init(string: "\(baseUrl)/comments.php") else { return }
+        let params = "id=\(commentId)&action=\(action)"
+        
+        var request = URLRequest(url: url as URL)
+        request.httpMethod = "POST"
+        let param = params.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)
+        request.httpBody = param!.data(using: .utf8)
+        
+        URLSession.shared.dataTask(with: request) { (data, response, error) in
+           if error != nil {
+                completion(nil, error)
+                return
+            }
+            do {
+            guard let data = data  else {
+                completion(nil, error)
+                return
+                }
+                 let decodeResponse = try JSONDecoder().decode(T.self, from: data)
+                    completion(decodeResponse, nil)
+                
+            } catch {
+                    completion(nil, error)
+                }
+        }.resume()
+    }
+
+
 }

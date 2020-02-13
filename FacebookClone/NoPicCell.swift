@@ -15,6 +15,7 @@ class NoPicCell: UITableViewCell {
     @IBOutlet weak var fullNameLabel: UILabel!
     @IBOutlet weak var postTextLabel: UILabel!
     
+    @IBOutlet weak var commentButton: UIButton!
     @IBOutlet weak var likeButton: UIButton!
     var profileImageUrl: String? {
         didSet {

@@ -138,6 +138,18 @@ class Helper {
                
            }
        }
+    
+    class func formatDate(dateString:String) -> String {
+        let formatterGetter = DateFormatter()
+        formatterGetter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        let date = formatterGetter.date(from: dateString)
+        
+        let formatterSetter = DateFormatter()
+        formatterSetter.dateFormat = "MMMM dd yyyy HH:mm"
+        let dateString = formatterSetter.string(from: date!)
+        
+        return dateString
+    }
 }
 
 extension UIImageView {
@@ -160,4 +172,7 @@ extension UIImageView {
         guard let url = URL(string: link) else { return }
         downloaded(from: url, contentMode: mode)
     }
+    
+    
+    
 }

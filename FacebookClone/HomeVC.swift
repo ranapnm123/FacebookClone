@@ -17,6 +17,7 @@ struct Global {
         static var postAvas = [UIImage]()
         static var postPicture = [UIImage]()
 }
+
 class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
 
    
@@ -31,7 +32,7 @@ class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePick
            let lastName: String
            let cover: String?
            let avatar: String?
-           let liked: String?
+           let liked: Int?
        }
        
        struct userPostResponse:Codable {
@@ -58,7 +59,7 @@ class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePick
     var isCoverAva:Bool?
     var isProfileAva:Bool?
     var isLoading = false
-    
+    var liked = [Int]()
     
     //params for post
     struct Post {
@@ -71,7 +72,7 @@ class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePick
         let userLastName: String
         let userCover: String
         let userAvatar: String
-        let liked:String
+        let liked:Int?
     }
     
     var posts = [Post]()
@@ -358,18 +359,22 @@ class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePick
                
                emptyCell?.fullNameLabel.text = "\(picture.userFirstName.capitalized) \(picture.userLastName.capitalized)"
                
-               emptyCell?.dateLabel.text = picture.postdateCreated
+               emptyCell?.dateLabel.text = Helper.formatDate(dateString:picture.postdateCreated)
                
                emptyCell?.postTextLabel.text = picture.postText
                
-//                if posts.count != Global.postAvas.count {
-                    emptyCell?.profileImageUrl = picture.userAvatar
-//                } else {
-//                    emptyCell?.profileImageView.image = Global.postAvas[indexPath.row]
-//                }
-//               Global.postPicture.append(UIImage())
-            emptyCell?.likeButton.tag = indexPath.row
+               emptyCell?.profileImageUrl = picture.userAvatar
 
+               emptyCell?.likeButton.tag = indexPath.row
+               emptyCell?.commentButton.tag = indexPath.row
+            DispatchQueue.main.async {
+                if self.liked[indexPath.row] == 1 {
+                    emptyCell?.likeButton.setImage(UIImage(named:"like.png"), for: .normal)
+                } else {
+                    emptyCell?.likeButton.setImage(UIImage(named:"unlike.png"), for: .normal)
+                }
+            }
+            
                return emptyCell!
                
            } else {
@@ -377,30 +382,54 @@ class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePick
                
                cell?.fullNameLabel.text = "\(picture.userFirstName.capitalized) \(picture.userLastName.capitalized)"
                
-               cell?.dateLabel.text = picture.postdateCreated
+               cell?.dateLabel.text = Helper.formatDate(dateString:picture.postdateCreated)
                
                cell?.postTextLabel.text = picture.postText
-               
-                
             
-//            if posts.count != Global.postPicture.count {
-                cell?.profileImageUrl = picture.userAvatar
-                cell?.postPictureUrl = picture.postPicture
-//            } else {
-//                cell?.profileImageView.image = Global.postAvas[indexPath.row]
-//                cell?.postImageView.image = Global.postPicture[indexPath.row]
-//            }
-            cell?.likeButton.tag = indexPath.row
+               cell?.profileImageUrl = picture.userAvatar
+            
+               cell?.postPictureUrl = picture.postPicture
+
+               cell?.likeButton.tag = indexPath.row
+               cell?.commentButton.tag = indexPath.row
+            
+                DispatchQueue.main.async {
+                   if self.liked[indexPath.row] == 1 {
+                        cell?.likeButton.setImage(UIImage(named:"like.png"), for: .normal)
+                    } else {
+                        cell?.likeButton.setImage(UIImage(named:"unlike.png"), for: .normal)
+                    }
+                }
+            
                return cell!
            }
            
         
        }
 
-    override func tableView(_ tableView: UITableView,
-     willDisplay cell: UITableViewCell,
-     forRowAt indexPath: IndexPath)
-    {
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+//        let picture = posts[indexPath.row]
+            
+        
+//            if picture.postPicture.isEmpty {
+//                let emptyCell = tableView.dequeueReusableCell(withIdentifier: "NoPicCell", for: indexPath) as? NoPicCell
+//        DispatchQueue.main.async {
+//           if self.liked[indexPath.row] == 1 {
+//                emptyCell?.likeButton.setImage(UIImage(named:"like.png"), for: .normal)
+//            } else {
+//                emptyCell?.likeButton.setImage(UIImage(named:"unlike.png"), for: .normal)
+//            }
+//        }
+//        } else {
+//        let cell = tableView.dequeueReusableCell(withIdentifier: "PicCell", for: indexPath) as? PicCell
+//                DispatchQueue.main.async {
+//                   if self.liked[indexPath.row] == 1 {
+//                        cell?.likeButton.setImage(UIImage(named:"like.png"), for: .normal)
+//                    } else {
+//                        cell?.likeButton.setImage(UIImage(named:"unlike.png"), for: .normal)
+//                    }
+//                }
+//        }
      // At the bottom...
      if (indexPath.row == self.posts.count - 1) {
      loadMore(offset: skip, limit: limit) // network request to get more data
@@ -408,21 +437,30 @@ class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePick
     }
     
        func loadPosts(offset: Int, limit: Int) {
-        self.posts.removeAll()
+        
            guard let id = Helper.getUserDetails()?.id else { return }
 
            ApiClient.shared.getPosts(id: id, offset: String(offset), limit: String(limit)) { (response:userPostResponse?, error) in
+             DispatchQueue.main.async {
                if error != nil {
                    Helper.showAlert(title: "Error", message: error!.localizedDescription, in: self)
                        return
                    }
-                 DispatchQueue.main.async {
+                
                    print("posts == \(response!)")
-                   
+                    self.posts.removeAll(keepingCapacity: false)
+                self.liked.removeAll(keepingCapacity: false)
+                
                    for object in response!.posts {
-                    let post = Post(postId: String(object.id), postUserId: String(object.user_id), postText: object.text!, postPicture: object.picture!, postdateCreated: object.date_created, userFirstName: object.firstName, userLastName: object.lastName, userCover: object.cover!, userAvatar: object.avatar!, liked: object.liked!)
+                    let post = Post(postId: String(object.id), postUserId: String(object.user_id), postText: object.text!, postPicture: object.picture!, postdateCreated: object.date_created, userFirstName: object.firstName, userLastName: object.lastName, userCover: object.cover!, userAvatar: object.avatar!, liked: object.liked ?? 0)
                        
                        self.posts.append(post)
+                    
+                    if object.liked == nil {
+                        self.liked.append(Int())
+                    } else {
+                        self.liked.append(1)
+                    }
                    }
                    self.tableView.reloadData()
                     self.skip += response!.posts.count
@@ -447,9 +485,15 @@ class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePick
                     
                     self.tableView.beginUpdates()
                     for (index, object) in response!.posts.enumerated() {
-                        let post = Post(postId: String(object.id), postUserId: String(object.user_id), postText: object.text!, postPicture: object.picture!, postdateCreated: object.date_created, userFirstName: object.firstName, userLastName: object.lastName, userCover: object.cover!, userAvatar: object.avatar!, liked: object.liked!)
+                        let post = Post(postId: String(object.id), postUserId: String(object.user_id), postText: object.text!, postPicture: object.picture!, postdateCreated: object.date_created, userFirstName: object.firstName, userLastName: object.lastName, userCover: object.cover!, userAvatar: object.avatar!, liked: object.liked ?? 0)
                         
                         self.posts.append(post)
+                        
+                        if object.liked == nil {
+                           self.liked.append(Int())
+                       } else {
+                           self.liked.append(1)
+                       }
                         
                        let lastSectionIndex = self.tableView.numberOfSections - 1
                         let lastRowIndex = self.tableView.numberOfRows(inSection: lastSectionIndex)
@@ -464,13 +508,31 @@ class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePick
             }
         }
     @IBAction func likeButtonAction(_ sender: UIButton) {
-        sender.setImage(UIImage(named: "like.png"), for: .normal)
-        
         
         guard let id = Helper.getUserDetails()?.id,
             let postId = self.posts[sender.tag].postId else { return}
         
-        ApiClient.shared.likePost(userId: id, postId: postId, action: "insert") { (response:likeCodable?, error) in
+        var action = ""
+        if liked[sender.tag] == 1 {
+            action = "delete"
+            self.liked[sender.tag] = Int()
+            sender.setImage(UIImage(named: "unlike.png"), for: .normal)
+        } else {
+            action = "insert"
+            self.liked[sender.tag] = 1
+            sender.setImage(UIImage(named: "like.png"), for: .normal)
+        }
+        
+        UIView.animate(withDuration: 0.15, animations: {
+            sender.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+        }) { (completed) in
+            UIView.animate(withDuration: 0.15, animations: {
+                sender.transform = CGAffineTransform.identity
+            })
+        }
+        
+
+        ApiClient.shared.likePost(userId: id, postId: postId, action: action) { (response:likeCodable?, error) in
 
             if error != nil {
                 Helper.showAlert(title: "Error", message: error!.localizedDescription, in: self)
@@ -480,6 +542,26 @@ class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePick
 //                Helper.showAlert(title: "like", message: response!.message, in: self)
 
                 }
+        }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "Comment" {
+            let vc = segue.destination as? CommentsVC
+                
+            vc?.profileImage = self.profileImageView.image ?? UIImage()
+            vc?.fullNameString = fullNameLabel.text ?? ""
+            vc?.dateString = posts[((sender as? UIButton)?.tag)!].postdateCreated
+            
+            vc?.textString = posts[((sender as? UIButton)?.tag)!].postText
+            vc?.postId = posts[((sender as? UIButton)?.tag)!].postId!
+            
+            let indexpath = IndexPath(row: ((sender as? UIButton)?.tag)!, section: 0)
+            guard let cell = tableView.cellForRow(at: indexpath) as? PicCell else {
+                return
+            }
+            vc?.pictureImage = cell.postImageView.image!
+            
         }
     }
     

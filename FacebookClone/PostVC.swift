@@ -23,6 +23,7 @@ class PostVC: UIViewController, UITextViewDelegate, UIImagePickerControllerDeleg
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var imageViewForPost: UIImageView!
     var isPictureSelected:Bool = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         profileImgView.layer.cornerRadius = profileImgView.frame.width / 2
@@ -44,9 +45,9 @@ class PostVC: UIViewController, UITextViewDelegate, UIImagePickerControllerDeleg
           }
     
     func textViewDidChange(_ textView: UITextView) {
-           let allowed = 101
-           let typed = textView.text.count
-           let remaining = allowed - typed
+//           let allowed = 101
+//           let typed = textView.text.count
+//           let remaining = allowed - typed
            
 //           countLabel.text = "\(remaining)/101"
            

@@ -62,8 +62,8 @@
             filePath = "FacebookClone/HomeVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "253"
-            endingLineNumber = "253"
+            startingLineNumber = "254"
+            endingLineNumber = "254"
             landmarkName = "uploadImage(from:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -151,22 +151,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "ADBB8BF3-B535-4215-B472-8747D1A55C37"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "FacebookClone/HomeVC.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "420"
-            endingLineNumber = "420"
-            landmarkName = "loadPosts(offset:limit:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "48C54C2E-7E3B-43CC-9C9D-B8B395C2C4C0"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
@@ -178,6 +162,118 @@
             endingLineNumber = "133"
             landmarkName = "updatePost(userId:text:imageData:completion:)"
             landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "C557AD0D-FF44-42F3-B644-490B91F82F38"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FacebookClone/CommentsVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "145"
+            endingLineNumber = "145"
+            landmarkName = "insertComment()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "C557AD0D-FF44-42F3-B644-490B91F82F38 - 2e4a5f6231faeb8"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "FacebookClone.CommentsVC.insertComment() -&gt; ()"
+                  moduleName = "FacebookClone"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/ravirana/Documents/Projects/FacebookClone/FacebookClone/CommentsVC.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "141"
+                  endingLineNumber = "141"
+                  offsetFromSymbolStart = "1041">
+               </Location>
+               <Location
+                  uuid = "C557AD0D-FF44-42F3-B644-490B91F82F38 - c8c6c552352fb19"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Optional&lt;FacebookClone.CommentsVC.insertCommentCodable&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in FacebookClone.CommentsVC.insertComment() -&gt; ()"
+                  moduleName = "FacebookClone"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/ravirana/Documents/Projects/FacebookClone/FacebookClone/CommentsVC.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "143"
+                  endingLineNumber = "143"
+                  offsetFromSymbolStart = "260">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "6B164CE8-9ACA-44B9-A880-D0ED3EA8C0D2"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FacebookClone/ApiClient.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "257"
+            endingLineNumber = "257"
+            landmarkName = "insertComment(userId:postId:action:comment:completion:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "207D7166-2694-465D-A808-1AA283E2E970"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FacebookClone/ApiClient.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "247"
+            endingLineNumber = "247"
+            landmarkName = "insertComment(userId:postId:action:comment:completion:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "207D7166-2694-465D-A808-1AA283E2E970 - c08074f2bf1b6992"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "FacebookClone.ApiClient.insertComment&lt;A where A: Swift.Decodable, A: Swift.Encodable&gt;(userId: Swift.String, postId: Swift.String, action: Swift.String, comment: Swift.String, completion: (Swift.Optional&lt;A&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "FacebookClone"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/ravirana/Documents/Projects/FacebookClone/FacebookClone/ApiClient.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "247"
+                  endingLineNumber = "247"
+                  offsetFromSymbolStart = "2499">
+               </Location>
+               <Location
+                  uuid = "207D7166-2694-465D-A808-1AA283E2E970 - 5e59cb9d0b8ccb2c"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__C.NSURLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in FacebookClone.ApiClient.insertComment&lt;A where A: Swift.Decodable, A: Swift.Encodable&gt;(userId: Swift.String, postId: Swift.String, action: Swift.String, comment: Swift.String, completion: (Swift.Optional&lt;A&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "FacebookClone"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/ravirana/Documents/Projects/FacebookClone/FacebookClone/ApiClient.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "248"
+                  endingLineNumber = "248"
+                  offsetFromSymbolStart = "298">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
