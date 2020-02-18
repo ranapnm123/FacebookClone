@@ -319,5 +319,56 @@ class ApiClient {
         }.resume()
     }
 
+    func deletePost<T:Codable>(postId:String, completion:@escaping((T?, Error?) -> Void)) {
+        guard let url = URL.init(string: "\(baseUrl)/deletePost.php") else { return }
+        let params = "id=\(postId)"
+        
+        var request = URLRequest(url: url as URL)
+        request.httpMethod = "POST"
+        let param = params.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)
+        request.httpBody = param!.data(using: .utf8)
+        URLSession.shared.dataTask(with: request) { (data, response, error) in
+            if error != nil {
+                completion(nil, error)
+                return
+            }
+            do {
+                guard let data = data else {
+                    completion(nil, error)
+                    return
+                }
+                let decodedResponse = try JSONDecoder().decode(T.self, from: data)
+                completion(decodedResponse, nil)
+            } catch {
+                completion(nil, error)
+            }
+        }.resume()
+    }
+    
+    func getFriends<T:Codable>(action: String, id:String, name:String, offset:String, limit:String, completion:@escaping((T?, Error?) -> Void)) {
+        guard let url = URL.init(string: "\(baseUrl)/friends.php") else { return }
+        let params = "action=\(action)&id=\(id)&name=\(name)&offset=\(offset)&limit=\(limit)"
+        
+        var request = URLRequest(url: url as URL)
+        request.httpMethod = "POST"
+        let param = params.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)
+        request.httpBody = param!.data(using: .utf8)
+        URLSession.shared.dataTask(with: request) { (data, response, error) in
+            if error != nil {
+                completion(nil, error)
+                return
+            }
+            do {
+                guard let data = data else {
+                    completion(nil, error)
+                    return
+                }
+                let decodedResponse = try JSONDecoder().decode(T.self, from: data)
+                completion(decodedResponse, nil)
+            } catch {
+                completion(nil, error)
+            }
+        }.resume()
+    }
 
 }

@@ -367,11 +367,16 @@ class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePick
 
                emptyCell?.likeButton.tag = indexPath.row
                emptyCell?.commentButton.tag = indexPath.row
+               emptyCell?.optionButton.tag = indexPath.row
+            
             DispatchQueue.main.async {
                 if self.liked[indexPath.row] == 1 {
                     emptyCell?.likeButton.setImage(UIImage(named:"like.png"), for: .normal)
+                    emptyCell?.likeButton.tintColor = UIColor(red: 59/255, green: 87/255, blue: 157/255, alpha: 1)
                 } else {
+                    
                     emptyCell?.likeButton.setImage(UIImage(named:"unlike.png"), for: .normal)
+                    emptyCell?.likeButton.tintColor = .darkGray
                 }
             }
             
@@ -392,12 +397,16 @@ class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePick
 
                cell?.likeButton.tag = indexPath.row
                cell?.commentButton.tag = indexPath.row
+               cell?.optionButton.tag = indexPath.row
             
                 DispatchQueue.main.async {
                    if self.liked[indexPath.row] == 1 {
                         cell?.likeButton.setImage(UIImage(named:"like.png"), for: .normal)
-                    } else {
-                        cell?.likeButton.setImage(UIImage(named:"unlike.png"), for: .normal)
+                        cell?.likeButton.tintColor = UIColor(red: 59/255, green: 87/255, blue: 157/255, alpha: 1)
+                        } else {
+                            
+                    cell?.likeButton.setImage(UIImage(named:"unlike.png"), for: .normal)
+                            cell?.likeButton.tintColor = .darkGray
                     }
                 }
             
@@ -510,17 +519,19 @@ class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePick
     @IBAction func likeButtonAction(_ sender: UIButton) {
         
         guard let id = Helper.getUserDetails()?.id,
-            let postId = self.posts[sender.tag].postId else { return}
+            let postId = self.posts[sender.tag].postId else { return }
         
         var action = ""
         if liked[sender.tag] == 1 {
             action = "delete"
             self.liked[sender.tag] = Int()
-            sender.setImage(UIImage(named: "unlike.png"), for: .normal)
+                sender.setImage(UIImage(named:"unlike.png"), for: .normal)
+                sender.tintColor = .darkGray
         } else {
             action = "insert"
             self.liked[sender.tag] = 1
-            sender.setImage(UIImage(named: "like.png"), for: .normal)
+                sender.setImage(UIImage(named:"like.png"), for: .normal)
+                sender.tintColor = UIColor(red: 59/255, green: 87/255, blue: 157/255, alpha: 1)
         }
         
         UIView.animate(withDuration: 0.15, animations: {
@@ -564,5 +575,37 @@ class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePick
             
         }
     }
+    
+    @IBAction func optionButtonAction(_ sender: UIButton) {
+        
+        guard let postId = self.posts[sender.tag].postId else { return }
+        let alert = UIAlertController()
+        let delete = UIAlertAction(title: "Delete Post", style: .destructive) { (action) in
+            
+            ApiClient.shared.deletePost(postId: postId) { (response:likeCodable?, error) in
+                if error != nil {
+                    Helper.showAlert(title: "Error", message: error!.localizedDescription, in: self)
+                    return
+                }
+                
+                DispatchQueue.main.async {
+                    if response?.status == "200" {
+                        self.posts.remove(at: sender.tag)
+                        let indexPath = IndexPath(row: sender.tag, section: 0)
+                        self.tableView.beginUpdates()
+                        self.tableView.deleteRows(at: [indexPath], with: .automatic)
+                        self.tableView.endUpdates()
+                    }
+                }
+            }
+        }
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
+            
+        }
+        alert.addAction(delete)
+        alert.addAction(cancel)
+        present(alert, animated: true, completion: nil)
+    }
+    
     
 }

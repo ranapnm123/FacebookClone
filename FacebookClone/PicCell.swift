@@ -16,6 +16,7 @@ class PicCell: UITableViewCell {
     @IBOutlet weak var postTextLabel: UILabel!
     @IBOutlet weak var postImageView: UIImageView!
     
+    @IBOutlet weak var optionButton: UIButton!
     @IBOutlet weak var commentButton: UIButton!
     @IBOutlet weak var likeButton: UIButton!
     var profileImageUrl: String? {
