@@ -12,6 +12,7 @@ class SearchUserCell: UITableViewCell {
 
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var fullNameLabel: UILabel!
+    @IBOutlet weak var friendButton: UIButton!
     override func awakeFromNib() {
         super.awakeFromNib()
         profileImageView.layer.cornerRadius = profileImageView.frame.size.width/2

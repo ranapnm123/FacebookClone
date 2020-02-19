@@ -18,32 +18,50 @@ struct Global {
         static var postPicture = [UIImage]()
 }
 
+//codable
+struct postCodable: Codable {
+    let id: Int
+    let user_id: Int
+    let text: String?
+    let picture: String?
+    let date_created: String
+    let firstName: String
+    let lastName: String
+    let cover: String?
+    let avatar: String?
+    let liked: Int?
+}
+
+struct userPostResponse:Codable {
+    let posts: [postCodable]
+}
+
+struct likeCodable: Codable {
+    let status: String
+    let message: String
+}
+ 
+//params for post
+struct Post {
+    let postId: String?
+    let postUserId: String
+    let postText: String
+    let postPicture: String
+    let postdateCreated: String
+    let userFirstName: String
+    let userLastName: String
+    let userCover: String
+    let userAvatar: String
+    let liked:Int?
+}
+
+
 class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
 
    
-    //codable
-       struct postCodable: Codable {
-           let id: Int
-           let user_id: Int
-           let text: String?
-           let picture: String?
-           let date_created: String
-           let firstName: String
-           let lastName: String
-           let cover: String?
-           let avatar: String?
-           let liked: Int?
-       }
-       
-       struct userPostResponse:Codable {
-           let posts: [postCodable]
-       }
     
-    struct likeCodable: Codable {
-        let status: String
-        let message: String
-    }
-       
+    
+      
     @IBOutlet weak var coverImageView:UIImageView!
     @IBOutlet weak var profileImageView:UIImageView!
     @IBOutlet weak var fullNameLabel:UILabel!
@@ -61,19 +79,7 @@ class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePick
     var isLoading = false
     var liked = [Int]()
     
-    //params for post
-    struct Post {
-        let postId: String?
-        let postUserId: String
-        let postText: String
-        let postPicture: String
-        let postdateCreated: String
-        let userFirstName: String
-        let userLastName: String
-        let userCover: String
-        let userAvatar: String
-        let liked:Int?
-    }
+    
     
     var posts = [Post]()
     var skip = 0

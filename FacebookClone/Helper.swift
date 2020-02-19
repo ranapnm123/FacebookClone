@@ -9,8 +9,10 @@
 import UIKit
 
 let currentUserDetails = "currentUserDetails"
+
 class Helper {
     
+    var facebookColor = UIColor(red: 65/255, green: 89/255, blue: 147/255, alpha: 1)
     
     // validate email address function / logic
     func isValid(email: String) -> Bool {

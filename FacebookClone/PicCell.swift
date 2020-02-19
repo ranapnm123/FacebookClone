@@ -15,6 +15,7 @@ class PicCell: UITableViewCell {
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var postTextLabel: UILabel!
     @IBOutlet weak var postImageView: UIImageView!
+    @IBOutlet weak var pictureImageViewHeightConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var optionButton: UIButton!
     @IBOutlet weak var commentButton: UIButton!
@@ -56,11 +57,13 @@ class PicCell: UITableViewCell {
                     }
                 }
                 
-                if let image = UIImage(data: data!) {
+                if let data = data {
+                if let image = UIImage(data: data) {
                     Global.postPicture.append(image)
                     DispatchQueue.main.async {
                         self.postImageView.image = image
                     }
+                }
                 }
                 
             }.resume()

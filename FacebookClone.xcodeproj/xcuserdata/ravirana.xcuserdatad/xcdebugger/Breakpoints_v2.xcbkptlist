@@ -64,7 +64,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "254"
             endingLineNumber = "254"
-            landmarkName = "uploadImage(from:)"
+            landmarkName = "showActionSheet()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -98,6 +98,38 @@
             endingLineNumber = "128"
             landmarkName = "downloadImageFromUrl(path:showIn:completion:)"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "819D40EF-2D59-4F71-B004-9EFA4F10D120 - 7490db42fc46666c"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "static FacebookClone.Helper.downloadImageFromUrl(path: Swift.String, showIn: __C.UIImageView, completion: (Swift.Bool) -&gt; ()) -&gt; ()"
+                  moduleName = "FacebookClone"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/ravirana/Documents/Projects/FacebookClone/FacebookClone/Helper.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "128"
+                  endingLineNumber = "128"
+                  offsetFromSymbolStart = "252">
+               </Location>
+               <Location
+                  uuid = "819D40EF-2D59-4F71-B004-9EFA4F10D120 - 4f723f2816079147"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__C.NSURLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in static FacebookClone.Helper.downloadImageFromUrl(path: Swift.String, showIn: __C.UIImageView, completion: (Swift.Bool) -&gt; ()) -&gt; ()"
+                  moduleName = "FacebookClone"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/ravirana/Documents/Projects/FacebookClone/FacebookClone/Helper.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "130"
+                  endingLineNumber = "130"
+                  offsetFromSymbolStart = "262">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -114,38 +146,6 @@
             endingLineNumber = "126"
             landmarkName = "downloadImageFromUrl(path:showIn:completion:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "56A83C9B-10D3-4443-BB59-4B78D8BF3E8C - 7490db42fc46666c"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "static FacebookClone.Helper.downloadImageFromUrl(path: Swift.String, showIn: __C.UIImageView, completion: (Swift.Bool) -&gt; ()) -&gt; ()"
-                  moduleName = "FacebookClone"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/ravirana/Documents/Projects/FacebookClone/FacebookClone/Helper.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "126"
-                  endingLineNumber = "126"
-                  offsetFromSymbolStart = "252">
-               </Location>
-               <Location
-                  uuid = "56A83C9B-10D3-4443-BB59-4B78D8BF3E8C - 4f723f2816079147"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__C.NSURLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in static FacebookClone.Helper.downloadImageFromUrl(path: Swift.String, showIn: __C.UIImageView, completion: (Swift.Bool) -&gt; ()) -&gt; ()"
-                  moduleName = "FacebookClone"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/ravirana/Documents/Projects/FacebookClone/FacebookClone/Helper.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "128"
-                  endingLineNumber = "128"
-                  offsetFromSymbolStart = "262">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -162,54 +162,6 @@
             endingLineNumber = "133"
             landmarkName = "updatePost(userId:text:imageData:completion:)"
             landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "C557AD0D-FF44-42F3-B644-490B91F82F38"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "FacebookClone/CommentsVC.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "145"
-            endingLineNumber = "145"
-            landmarkName = "insertComment()"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "C557AD0D-FF44-42F3-B644-490B91F82F38 - 2e4a5f6231faeb8"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "FacebookClone.CommentsVC.insertComment() -&gt; ()"
-                  moduleName = "FacebookClone"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/ravirana/Documents/Projects/FacebookClone/FacebookClone/CommentsVC.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "145"
-                  endingLineNumber = "145"
-                  offsetFromSymbolStart = "1041">
-               </Location>
-               <Location
-                  uuid = "C557AD0D-FF44-42F3-B644-490B91F82F38 - c8c6c552352fb19"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Optional&lt;FacebookClone.CommentsVC.insertCommentCodable&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in FacebookClone.CommentsVC.insertComment() -&gt; ()"
-                  moduleName = "FacebookClone"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/ravirana/Documents/Projects/FacebookClone/FacebookClone/CommentsVC.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "147"
-                  endingLineNumber = "147"
-                  offsetFromSymbolStart = "260">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -304,7 +256,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "582"
             endingLineNumber = "582"
-            landmarkName = "optionButtonAction(_:)"
+            landmarkName = "prepare(for:sender:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -320,7 +272,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "85"
             endingLineNumber = "85"
-            landmarkName = "searchBar(_:textDidChange:)"
+            landmarkName = "loadUsers(_:_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -336,7 +288,23 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "105"
             endingLineNumber = "105"
-            landmarkName = "searchBarCancelButtonClicked(_:)"
+            landmarkName = "searchBar(_:textDidChange:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "EFC536F2-419F-444A-AFD5-60A11E14AA31"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FacebookClone/GuestVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "100"
+            endingLineNumber = "100"
+            landmarkName = "loadPosts(offset:limit:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

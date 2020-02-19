@@ -73,10 +73,11 @@ class CommentsVC: UIViewController {
     
     
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        navigationController?.setNavigationBarHidden(true, animated: false)
+        
         profileImageView.image = profileImage
         fullNameLabel.text = fullNameString
         dateLabel.text = Helper.formatDate(dateString:dateString)
@@ -135,52 +136,59 @@ class CommentsVC: UIViewController {
     }
     
     @IBAction func insertComment() {
-        guard let id = Helper.getUserDetails()?.id, let comment = commentTextView.text else { return}
-        
-        
-        
-        
-        let action = "insert"
-        
-        ApiClient.shared.insertComment(userId: id, postId: postId, action: action, comment: comment) { (response:insertCommentCodable?, error) in
-            
-         if error != nil {
-            DispatchQueue.main.async {
-                        Helper.showAlert(title: "Error", message: error!.localizedDescription, in: self)
-            }
-                return
-            }
-            DispatchQueue.main.async {
-            if response?.status == "200" {
-                
-                let fullName = "\(Helper.getUserDetails()?.firstName ?? "") \(Helper.getUserDetails()?.lastName ?? "")"
-                let message = Mesasge(name: fullName, profilePictureUrl: Helper.getUserDetails()?.avatar ?? "", messagetext: comment, commentId: response!.new_comment_id)
-                self.comments.append(message)
-                let indexpath = IndexPath(item: self.comments.count-1, section: 0)
-                self.tableView.beginUpdates()
-                self.tableView.insertRows(at: [indexpath], with: .top)
-                self.tableView.endUpdates()
-                
-                self.tableView.scrollToRow(at: indexpath, at: .bottom, animated: true)
-                
-                self.commentTextView.text = ""
-                self.textViewDidChange(self.commentTextView)
-                self.commentTextView.resignFirstResponder()
-                
-            } else {
-                Helper.showAlert(title: "Error", message: error!.localizedDescription, in: self)
-            }
-            }
+        if commentTextView.text.isEmpty == false && commentTextView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == false  {
+            sendComment()
         }
     }
     
+    func sendComment() {
+        guard let id = Helper.getUserDetails()?.id else { return}
+               
+               
+               
+               
+               let action = "insert"
+               
+               let comment = commentTextView.text.trimmingCharacters(in: .whitespacesAndNewlines)
+               
+               ApiClient.shared.insertComment(userId: id, postId: postId, action: action, comment: comment) { (response:insertCommentCodable?, error) in
+                   
+                if error != nil {
+                   DispatchQueue.main.async {
+                               Helper.showAlert(title: "Error", message: error!.localizedDescription, in: self)
+                   }
+                       return
+                   }
+                   DispatchQueue.main.async {
+                   if response?.status == "200" {
+                       
+                       let fullName = "\(Helper.getUserDetails()?.firstName ?? "") \(Helper.getUserDetails()?.lastName ?? "")"
+                       let message = Mesasge(name: fullName, profilePictureUrl: Helper.getUserDetails()?.avatar ?? "", messagetext: comment, commentId: response!.new_comment_id)
+                       self.comments.append(message)
+                       let indexpath = IndexPath(item: self.comments.count-1, section: 0)
+                       self.tableView.beginUpdates()
+                       self.tableView.insertRows(at: [indexpath], with: .top)
+                       self.tableView.endUpdates()
+                       
+                       self.tableView.scrollToRow(at: indexpath, at: .bottom, animated: true)
+                       
+                       self.commentTextView.text = ""
+                       self.textViewDidChange(self.commentTextView)
+                       self.commentTextView.resignFirstResponder()
+                       
+                   } else {
+                       Helper.showAlert(title: "Error", message: error!.localizedDescription, in: self)
+                   }
+                   }
+               }
+    }
     
     func loadComments() {
         ApiClient.shared.getPostComments(postId: postId, offset: String(skipForComments), limit: String(limitForComments), action: "select") { (response:commentResponse?, error) in
             
             if error != nil {
             DispatchQueue.main.async {
-                        Helper.showAlert(title: "Error", message: error!.localizedDescription, in: self)
+//                        Helper.showAlert(title: "Error", message: error!.localizedDescription, in: self)
             }
                 return
             }

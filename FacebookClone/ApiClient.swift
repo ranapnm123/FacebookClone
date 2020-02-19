@@ -370,5 +370,32 @@ class ApiClient {
             }
         }.resume()
     }
+    
+    func friendRequest<T:Codable>(action:String, userId:String, friendId:String, completion:@escaping((T?, Error?)->Void)) {
+        guard let url = URL.init(string: "\(baseUrl)/friends.php") else { return }
+        let params = "action=\(action)&user_id=\(userId)&friend_id=\(friendId)"
+        
+        var request = URLRequest(url: url as URL)
+        request.httpMethod = "POST"
+        request.httpBody = (params.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed))?.data(using: .utf8)
+        
+        URLSession.shared.dataTask(with: request) { (data, response, error) in
+            if error != nil {
+                completion(nil, error)
+                return
+            }
+            do {
+            guard let data = data else {
+                completion(nil, error)
+                return
+            }
+            let jsonResponse = try JSONDecoder().decode(T.self, from: data)
+            completion(jsonResponse, nil)
+            } catch {
+                completion(nil, error)
+            }
+        }.resume()
+    }
+    
 
 }
