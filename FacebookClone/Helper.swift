@@ -152,6 +152,30 @@ class Helper {
         
         return dateString
     }
+    
+    func showActionSheet(options:[String], isCancel:Bool, destructiveIndexes:[Int], title:String?, message:String?, showIn vc:UIViewController, completion:@escaping(_ selected:Int)->Void) {
+        let alert = UIAlertController.init(title: title, message: message, preferredStyle: .actionSheet)
+        for (index, option) in options.enumerated() {
+            let action: UIAlertAction!
+            if destructiveIndexes.contains(index) {
+                action = UIAlertAction(title: option, style: .destructive) { (action) in
+                completion(index)
+                }
+            } else {
+                action = UIAlertAction(title: option, style: .default) { (action) in
+                    completion(index)
+                }
+            }
+             alert.addAction(action)
+        }
+        
+        if isCancel {
+            let action = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
+                       }
+                       alert.addAction(action)
+        }
+        vc.present(alert, animated: true, completion: nil)
+    }
 }
 
 extension UIImageView {
@@ -178,3 +202,25 @@ extension UIImageView {
     
     
 }
+
+@IBDesignable class BorderView : UIButton {
+    @IBInspectable var borderColor: UIColor = .clear {
+        didSet {
+        layer.borderColor = borderColor.cgColor
+        }
+    }
+
+    @IBInspectable var borderWidth: CGFloat = 0 {
+        didSet {
+            layer.borderWidth = borderWidth
+        }
+    }
+
+    @IBInspectable var cornerRadius: CGFloat = 0 {
+        didSet {
+            layer.cornerRadius = cornerRadius
+        }
+    }
+}
+
+

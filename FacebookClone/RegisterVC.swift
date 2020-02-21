@@ -12,7 +12,22 @@ import UIKit
 
 class RegisterVC: UIViewController {
 
-   
+   //codable
+   struct RegisterResponse : Codable
+   {
+       let status : String
+       let message : String
+       let email : String?
+       var password : String?
+       let firstName : String?
+       let lastName : String?
+       let birthday : String?
+       let gender : String?
+       let id : String?
+       let cover: String?
+       let avatar: String?
+       let bio: String?
+   }
     
     // cons obj
     @IBOutlet weak var contentView_width: NSLayoutConstraint!

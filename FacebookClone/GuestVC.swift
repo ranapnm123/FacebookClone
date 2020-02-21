@@ -10,6 +10,8 @@ import UIKit
 
 class GuestVC: UITableViewController {
 
+    var friendRequestCallback = {(status:Int)->Void in}
+
     @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var friendButton: UIButton!
     @IBOutlet weak var followButton: UIButton!
@@ -33,6 +35,8 @@ class GuestVC: UITableViewController {
     var isLoading = false
     var liked = [Int]()
 
+    var requested = 0
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: false)
@@ -85,6 +89,24 @@ class GuestVC: UITableViewController {
         if bio.isEmpty {
             headerView.frame.size.height -= 45
         }
+        
+        //not request
+        if requested == 0 {
+            
+            self.button(with: self.friendButton, image: "unfriend.png", tintColor: .darkGray, title: "Add")
+            
+            //current user requested by the guest-user
+        } else if requested == 1 {
+          
+            
+            self.button(with: self.friendButton, image: "request.png", tintColor: Helper().facebookColor, title: "Requested")
+            //user requested current user to be his friend
+        } else if requested == 2 {
+            self.button(with: self.friendButton, image: "respond.png", tintColor: Helper().facebookColor, title: "Respond")
+          //they are friend
+        } else if requested == 4{
+            self.button(with: self.friendButton, image: "friends.png", tintColor: Helper().facebookColor, title: "Friend")
+        }
     }
     
     func loadPosts(offset: Int, limit: Int) {
@@ -120,7 +142,7 @@ class GuestVC: UITableViewController {
         
     }
 
-    func loadMore(offset: Int, limit: Int) {
+    func loadMorePosts(offset: Int, limit: Int) {
         
         isLoading = true
 
@@ -196,6 +218,119 @@ class GuestVC: UITableViewController {
                     }
             }
         }
+    
+    fileprivate func updateFriendShipRequest(with action: String, _ userId: String, _ friendId: String) {
+        
+        UIView.animate(withDuration: 0.15, animations: {
+                        self.friendButton.transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
+                       }) { (completed) in
+                           UIView.animate(withDuration: 0.15, animations: {
+                            self.friendButton.transform = CGAffineTransform.identity
+                           })
+                       }
+                       
+        
+        ApiClient.shared.friendRequest(action: action, userId: userId, friendId: friendId) { (response:searchResponseCodable?, error) in
+            if error != nil {
+                DispatchQueue.main.async {
+                    Helper.showAlert(title: "Error", message: error!.localizedDescription, in: self)
+                    return
+                }
+            }
+            print("response === \(response!)")
+            if response?.status == "200" {
+                DispatchQueue.main.async {
+                    if self.requested == 0 {
+                        self.requested = 1
+                        
+                        self.button(with: self.friendButton, image: "request.png", tintColor: Helper().facebookColor, title: "Requested")
+
+
+                    } else if self.requested == 1 {
+                        self.requested = 0
+                        
+                        self.button(with: self.friendButton, image: "unfriend.png", tintColor: .darkGray, title: "Add")
+
+
+                    } else if self.requested == 3 {
+                        
+                        self.button(with: self.friendButton, image: "friends.png", tintColor: Helper().facebookColor, title: "Friends")
+                        
+                    }
+                    self.friendRequestCallback(self.requested)
+                }
+            }
+        }
+    }
+    
+    @IBAction func friendButtonAction(_ sender: UIButton) {
+        
+                guard let userId = Helper.getUserDetails()?.id else { return }
+                     let guestId = id
+               
+                //currently not requested by current user -> request
+                if requested == 0 {
+                    
+                    updateFriendShipRequest(with: "add", userId, String(guestId))
+                   
+                    //request already sent by current user -> cancel request
+                } else if requested == 1 {
+                    
+                    updateFriendShipRequest(with: "reject", userId, String(guestId))
+                
+                    //request is received by current user
+                } else if requested == 2 {
+                    
+                    showActionSheet()
+                
+                } else if requested == 3 {
+                    //delete friend -> unfriend
+//                    showActionSheet()
+        }
+                
+                
+                
+               
+            }
+
+    func showActionSheet() {
+        
+        guard let userId = Helper.getUserDetails()?.id else {
+            return
+        }
+        let guestId = id
+        var tempArr = ["Cancel Request", "Confirm Friend"]
+        if requested == 3 {
+//            tempArr = ["UnFriend"]
+        }
+        Helper().showActionSheet(options: tempArr, isCancel: true, destructiveIndexes:[0], title: nil, message:nil, showIn: self) { (selected) in
+            switch selected {
+            case 0:
+                print("Cancel Request")
+                self.requested = 1
+                
+                self.updateFriendShipRequest(with: "reject", String(guestId), String(userId))
+                
+            case 1:
+                print("Confirm Friend")
+                self.requested = 3
+                
+                self.updateFriendShipRequest(with: "confirm", String(guestId), String(userId))
+                
+            default:
+                print("default")
+            }
+        }
+        
+    }
+    
+    func button(with button:UIButton, image:String, tintColor:UIColor, title:String) {
+        let image = UIImage(named: image)
+        button.setBackgroundImage(image, for: .normal)
+        button.tintColor = tintColor
+        button.setTitle(title, for: .normal)
+        button.titleLabel?.textColor = tintColor
+    }
 
     // MARK: - Table view data source
 
@@ -213,6 +348,7 @@ class GuestVC: UITableViewController {
 
         let post = posts[indexPath.row]
         cell.fullNameLabel.text = post.userFirstName.capitalized + " " + post.userLastName.capitalized
+        cell.dateLabel.text = Helper.formatDate(dateString:post.postdateCreated)
         cell.profileImageView.downloaded(from: URL(string: post.userAvatar)!, contentMode: .scaleAspectFill)
         cell.postTextLabel.text = post.postText
         if !post.postPicture.isEmpty {

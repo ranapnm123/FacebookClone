@@ -458,7 +458,7 @@ class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePick
            ApiClient.shared.getPosts(id: id, offset: String(offset), limit: String(limit)) { (response:userPostResponse?, error) in
              DispatchQueue.main.async {
                if error != nil {
-                   Helper.showAlert(title: "Error", message: error!.localizedDescription, in: self)
+//                   Helper.showAlert(title: "Error", message: error!.localizedDescription, in: self)
                        return
                    }
                 

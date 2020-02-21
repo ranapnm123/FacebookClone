@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		130B49D423FD9AEC004BC9C0 /* GuestVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 130B49D323FD9AEC004BC9C0 /* GuestVC.swift */; };
+		130B49D623FEE5C5004BC9C0 /* friendRequestCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 130B49D523FEE5C5004BC9C0 /* friendRequestCell.swift */; };
 		13411BA523F59BF10058D1F2 /* CommentsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13411BA423F59BF10058D1F2 /* CommentsVC.swift */; };
 		13411BA723F59BF80058D1F2 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13411BA623F59BF80058D1F2 /* CommentCell.swift */; };
 		13411BA923F721010058D1F2 /* FriendsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13411BA823F721010058D1F2 /* FriendsVC.swift */; };
@@ -31,6 +32,7 @@
 
 /* Begin PBXFileReference section */
 		130B49D323FD9AEC004BC9C0 /* GuestVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GuestVC.swift; sourceTree = "<group>"; };
+		130B49D523FEE5C5004BC9C0 /* friendRequestCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = friendRequestCell.swift; sourceTree = "<group>"; };
 		13411BA423F59BF10058D1F2 /* CommentsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsVC.swift; sourceTree = "<group>"; };
 		13411BA623F59BF80058D1F2 /* CommentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
 		13411BA823F721010058D1F2 /* FriendsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsVC.swift; sourceTree = "<group>"; };
@@ -97,11 +99,12 @@
 				130B49D323FD9AEC004BC9C0 /* GuestVC.swift */,
 				D36ED4E923DEB8F600EB5DCE /* Helper.swift */,
 				D36ED4EF23DEBE0600EB5DCE /* ApiClient.swift */,
-				D36ED4ED23DEB90B00EB5DCE /* Main.storyboard */,
 				13B83BE223F1C34200A20AFB /* NoPicCell.swift */,
 				13B83BE323F1C34300A20AFB /* PicCell.swift */,
 				13411BA623F59BF80058D1F2 /* CommentCell.swift */,
 				13411BAA23F724DE0058D1F2 /* SearchUserCell.swift */,
+				130B49D523FEE5C5004BC9C0 /* friendRequestCell.swift */,
+				D36ED4ED23DEB90B00EB5DCE /* Main.storyboard */,
 				13F6716723D75DD2005B3A31 /* Assets.xcassets */,
 				13F6716923D75DD2005B3A31 /* LaunchScreen.storyboard */,
 				13F6716C23D75DD2005B3A31 /* Info.plist */,
@@ -195,6 +198,7 @@
 				134F5B5123EDFD4D00570569 /* PostVC.swift in Sources */,
 				13F6716123D75DCD005B3A31 /* SceneDelegate.swift in Sources */,
 				D36ED4F023DEBE0600EB5DCE /* ApiClient.swift in Sources */,
+				130B49D623FEE5C5004BC9C0 /* friendRequestCell.swift in Sources */,
 				13411BA723F59BF80058D1F2 /* CommentCell.swift in Sources */,
 				13411BA923F721010058D1F2 /* FriendsVC.swift in Sources */,
 			);
