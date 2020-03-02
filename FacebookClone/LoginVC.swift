@@ -23,6 +23,8 @@ struct LoginResponse : Codable
     let cover: String?
     let avatar: String?
     let bio: String?
+    let allow_friends: String?
+    let allow_follow:String?
 }
 
 class LoginVC: UIViewController {
@@ -43,7 +45,6 @@ class LoginVC: UIViewController {
     @IBOutlet weak var registerButton: UIButton!
     
     @IBOutlet weak var handsImageView: UIImageView!
-    
     
     // constraints obj
     @IBOutlet weak var coverImageView_top: NSLayoutConstraint!

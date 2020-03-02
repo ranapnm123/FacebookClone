@@ -61,8 +61,9 @@ class ApiClient {
                if let data = data {
                    if let decodeResponse = try? JSONDecoder().decode(T.self, from: data) {
                        completion(decodeResponse, nil)
-                   }
-                   return
+                   } else {
+                    completion(nil, error)
+                }
                }
            }.resume()
        }
@@ -153,9 +154,9 @@ class ApiClient {
         }.resume()
     }
     
-    func updateUser<T:Codable>(id:String, email:String, password:String, isPass:String, fname:String, lName:String, birthday:String, gender:String, completion:@escaping (T?, Error?) -> Void) {
+    func updateUser<T:Codable>(id:String, email:String, password:String, isPass:String, fname:String, lName:String, birthday:String, gender:String, allowFriends:String, allowFollow:String, completion:@escaping (T?, Error?) -> Void) {
         guard let url = NSURL.init(string: "\(baseUrl)/updateUser.php") else { return }
-               let params = "id=\(id)&email=\(email)&firstName=\(fname)&lastName=\(lName)&birthday=\(birthday)&gender=\(gender)&newPassword=\(isPass)&password=\(password)"
+               let params = "id=\(id)&email=\(email)&firstName=\(fname)&lastName=\(lName)&birthday=\(birthday)&gender=\(gender)&newPassword=\(isPass)&password=\(password)&allow_friends=\(allowFriends)&allow_follow=\(allowFollow)"
                
                var request = URLRequest(url: url as URL)
                request.httpMethod = "POST"

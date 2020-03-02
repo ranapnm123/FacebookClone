@@ -24,11 +24,14 @@ struct User:Codable {
     let cover: String?
     let avatar: String?
     let bio:String?
+    let allow_friends: Int?
+    let allow_follow: Int?
     let date_created: String
     let request_sender: Int?
     let request_receiver: Int?
     let friendship_sender: Int?
     let friendship_receiver: Int?
+    
 }
 
 struct requestCodable: Codable {
@@ -225,62 +228,110 @@ class FriendsVC: UIViewController, UISearchBarDelegate {
     }
     
     @IBAction func friendButtonActionForSearch(_ sender: UIButton) {
-        guard let id = Helper.getUserDetails()?.id, let friendId = searchResult?.users![sender.tag].id else { return }
+        guard let currentUseIid = Helper.getUserDetails()?.id, let friendUserId = searchResult?.users![sender.tag].id else { return }
         
-        var action = ""
-        if friendshipStatus[sender.tag] == 1 {
-        action = "reject"
-        } else {
-         action = "add"
+       
+        //current use didn't sent friend request -> send it
+        if friendshipStatus[sender.tag] == 0 {
+            
+            self.friendshipStatus[sender.tag] = 1
+            
+//            button(with: sender, image: "request.png", tintColor: Helper().facebookColor)
+            
+            updateFriendshipRequest(action: "add", userId: currentUseIid, friendId: friendUserId, indexPathRow: sender.tag)
+            
         }
-        ApiClient.shared.friendRequest(action: action, userId: id, friendId: String(friendId)) { (response:searchResponseCodable?, error) in
-            if error != nil {
-                       DispatchQueue.main.async {
-                                   Helper.showAlert(title: "Error", message: error!.localizedDescription, in: self)
-                            return
-                            }
-                        }
-                       
-            if response?.status == "200" {
-                       DispatchQueue.main.async {
-//                        Helper.showAlert(title: "Success", message: (response?.message)!, in: self)
-                        
-                        if self.friendshipStatus[sender.tag] == 1 {
-                            self.friendshipStatus.insert(Int(), at: sender.tag)
+        //current user sent friendship request -> cancel it
+        else if friendshipStatus[sender.tag] == 1 {
+            //update button
+//            button(with: sender, image: "unfriend.png", tintColor: .darkGray)
+            
+            self.friendshipStatus[sender.tag] = 0
+            //send request
+            updateFriendshipRequest(action: "reject", userId: currentUseIid, friendId: friendUserId, indexPathRow: sender.tag)
+           
+        }
+             //current user received friendship request -> accept/reject actionsheet
+        else if friendshipStatus[sender.tag] == 2 {
+            Helper().showActionSheet(options: ["Delete","Confirm"], isCancel: true, destructiveIndexes: [0], title: nil, message: nil, showIn: self) { (actionButtonIndex) in
+                switch actionButtonIndex {
+                case 0:
+                    //udpate status -> no more any relations
+                    self.friendshipStatus[sender.tag] = 0
+//                    self.button(with: sender, image: "unfriend.png", tintColor: .darkGray)
+                    self.updateFriendshipRequest(action: "reject", userId: currentUseIid, friendId: friendUserId, indexPathRow: sender.tag)
+                    self.updateFriendshipRequest(action: "reject", userId: String(friendUserId), friendId: Int(currentUseIid)!, indexPathRow: sender.tag)
 
-                        } else {
-                            self.friendshipStatus.insert(1, at: sender.tag)
-                        }
-                        self.searchTableView.beginUpdates()
-                        self.searchTableView.reloadRows(at: [IndexPath(row: sender.tag, section: 0)], with: .automatic)
-                        self.searchTableView.endUpdates()
-                        
-                       }
+                case 1:
+                    //update status -> now friends
+                    self.friendshipStatus[sender.tag] = 3
+//                    self.button(with: sender, image: "friend.png", tintColor: Helper().facebookColor)
+                    self.updateFriendshipRequest(action: "confirm", userId: String(friendUserId), friendId: Int(currentUseIid)!, indexPathRow: sender.tag)
+
+                default: break
+                }
+                
             }
+            
         }
+            //current user and searched user are friend -> show actionsheet
+        else if friendshipStatus[sender.tag] == 3 {
+            Helper().showActionSheet(options: ["Delete"], isCancel: true, destructiveIndexes: [0], title: nil, message: nil, showIn: self) { (actionButtonIndex) in
+                switch actionButtonIndex {
+                case 0:
+                    self.friendshipStatus[sender.tag] = 0
+//                    self.button(with: sender, image: "unfriend.png", tintColor: .darkGray)
+                    self.updateFriendshipRequest(action: "delete", userId: currentUseIid, friendId: friendUserId, indexPathRow: sender.tag)
+                    self.updateFriendshipRequest(action: "delete", userId: String(friendUserId), friendId: Int(currentUseIid)!, indexPathRow: sender.tag)
+
+
+                default: break
+                }
+                
+            }
+            //show actionsheet to update friendship: delete
         }
+        
+    }
     
-    func friendRequestAction(action:String, cell:UITableViewCell) {
-        guard let indexpath = friendsTableView.indexPath(for: cell) else { return }
-        guard let friendId = Helper.getUserDetails()?.id, let userId = requestResult?.requests![indexpath.row].id else { return }
-               
-               ApiClient.shared.friendRequest(action: action, userId: String(userId), friendId: String(friendId)) { (response:requestCodable?, error) in
-                   if error != nil {
-                              DispatchQueue.main.async {
-                               Helper.showAlert(title: "Error", message: error!.localizedDescription, in: self)
-                               return
-                                   }
+    func updateFriendshipRequest(action:String, userId:String, friendId:Int, indexPathRow:Int) {
+        ApiClient.shared.friendRequest(action: action, userId: userId, friendId: String(friendId)) { (response:searchResponseCodable?, error) in
+                    if error != nil {
+                               DispatchQueue.main.async {
+                                           Helper.showAlert(title: "Error", message: error!.localizedDescription, in: self)
+                                    return
+                                    }
+                                }
+                               
+                    if response?.status == "200" {
+                               DispatchQueue.main.async {
+                                
+                                if !self.searchTableView.isHidden {
+                                self.searchTableView.beginUpdates()
+                                self.searchTableView.reloadRows(at: [IndexPath(row: indexPathRow, section: 0)], with: .automatic)
+                                self.searchTableView.endUpdates()
+                                self.getFriendRequests()
+                                }
+                                
                                }
-                              
-                   if response?.status == "200" {
-                       DispatchQueue.main.async {
-//                           self.requestResult?.requests?.remove(at: indexpath.row)
-//                           self.friendsTableView.beginUpdates()
-//                           self.friendsTableView.deleteRows(at: [indexpath], with: .automatic)
-//                           self.friendsTableView.endUpdates()
-                       }
-                   }
-               }
+                    }
+                }
+    }
+    
+    func button(with button:UIButton, image:String, tintColor:UIColor) {
+        let image = UIImage(named: image)
+        button.setBackgroundImage(image, for: .normal)
+        button.tintColor = tintColor
+    }
+    
+    func friendRequestAction(action:String, status:Int, cell:UITableViewCell) {
+        guard let indexpath = friendsTableView.indexPath(for: cell) else { return }
+            
+        friendshipStatus.insert(status, at: indexpath.row)
+        
+        guard let friendId = Helper.getUserDetails()?.id, let userId = requestResult?.requests![indexpath.row].id else { return }
+        updateFriendshipRequest(action: action, userId: String(userId), friendId: Int(friendId)!, indexPathRow: indexpath.row)
+               
     }
    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -294,7 +345,9 @@ class FriendsVC: UIViewController, UISearchBarDelegate {
             guest.avaPath = (searchResult?.users?[indexpath.row])!.avatar ?? ""
             guest.coverPath = (searchResult?.users?[indexpath.row])!.cover ?? ""
             guest.bio = (searchResult?.users?[indexpath.row])!.bio ?? ""
-            guest.requested = friendshipStatus[indexpath.row]
+            guest.friendshipStatus = friendshipStatus[indexpath.row]
+            guest.allowFriends = (searchResult?.users?[indexpath.row])!.allow_friends!
+            guest.allowFollow = (searchResult?.users?[indexpath.row])!.allow_follow!
             guest.friendRequestCallback = { status in
                 if status == 1 {
                     self.friendshipStatus.insert(1, at: indexpath.row)
@@ -315,18 +368,9 @@ class FriendsVC: UIViewController, UISearchBarDelegate {
             guest.avaPath = (requestResult?.requests?[indexpath.row])!.avatar ?? ""
             guest.coverPath = (requestResult?.requests?[indexpath.row])!.cover ?? ""
             guest.bio = (requestResult?.requests?[indexpath.row])!.bio ?? ""
-            guest.requested = 2 //request is received by current user
+            guest.friendshipStatus = friendshipStatus[indexpath.row] //request is received by current user
             guest.friendRequestCallback = { status in
                 self.getFriendRequests()
-//                if status == 1 {
-//                    self.requested.insert(1, at: indexpath.row)
-//
-//                } else {
-//                    self.requested.insert(Int(), at: indexpath.row)
-//                }
-//                self.friendsTableView.beginUpdates()
-//                self.friendsTableView.reloadRows(at: [IndexPath(row: indexpath.row, section: 0)], with: .automatic)
-//                self.friendsTableView.endUpdates()
             }
         }
         
@@ -361,6 +405,14 @@ extension FriendsVC:UITableViewDelegate, UITableViewDataSource {
         if let url = user?.avatar, url.count > 10 {
             cell.profileImageView.downloaded(from: URL(string: url)!, contentMode: .scaleAspectFit)
         }
+            //if other user
+            if searchResult?.users![indexPath.row].allow_friends == 0 {
+                cell.friendButton.isHidden = true
+                cell.accessoryType = .disclosureIndicator
+            } else {
+                cell.friendButton.isHidden = false
+                cell.accessoryType = .none
+            }
             
             if self.friendshipStatus[indexPath.row] == 1 {
                 self.button(with: cell.friendButton, image: "request.png", tintColor: Helper().facebookColor)
@@ -374,6 +426,8 @@ extension FriendsVC:UITableViewDelegate, UITableViewDataSource {
             } else {
                 self.button(with: cell.friendButton, image: "unfriend.png", tintColor: .darkGray)
             }
+            
+            
         return cell
         } else if tableView == friendsTableView {
             let cell = tableView.dequeueReusableCell(withIdentifier: "friendRequestCell", for: indexPath) as! friendRequestCell
@@ -384,12 +438,12 @@ extension FriendsVC:UITableViewDelegate, UITableViewDataSource {
 
                 let user = requestResult?.requests![indexPath.row]
                 cell.fullNameLabel.text = "\(user?.firstName.capitalized ?? "") \(user?.lastName.capitalized ?? "")"
-                
+            friendshipStatus.insert(2, at: indexPath.row)
                 if let url = user?.avatar, url.count > 10 {
                     cell.profileImageView.downloaded(from: URL(string: url)!, contentMode: .scaleAspectFit)
                 }
             
-            cell.executeFriendRequest = friendRequestAction(action:cell:)
+            cell.executeFriendRequest = friendRequestAction(action:status:cell:)
             
             return cell
         }
@@ -398,11 +452,7 @@ extension FriendsVC:UITableViewDelegate, UITableViewDataSource {
         }
     }
     
-    func button(with button:UIButton, image:String, tintColor:UIColor) {
-        let image = UIImage(named: image)
-        button.setBackgroundImage(image, for: .normal)
-        button.tintColor = tintColor
-    }
+    
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 100

@@ -11,7 +11,7 @@ import UIKit
 
 
 class friendRequestCell: UITableViewCell {
-    var executeFriendRequest = {(action:String, cell:UITableViewCell) ->Void in }
+    var executeFriendRequest = {(action:String, status:Int, cell:UITableViewCell) ->Void in }
 
     @IBOutlet weak var deleteButton: UIButton!
     @IBOutlet weak var confirmButton: UIButton!
@@ -32,7 +32,7 @@ class friendRequestCell: UITableViewCell {
         
         messageLabel.text = "Request accepted."
         
-        executeFriendRequest("confirm", self)
+        executeFriendRequest("confirm", 3, self)
     }
 
     @IBAction func deleteButtonAction(_ sender: UIButton) {
@@ -42,6 +42,6 @@ class friendRequestCell: UITableViewCell {
         
         messageLabel.text = "Request removed."
         
-        executeFriendRequest("delete", self)
+        executeFriendRequest("reject", 0, self)
     }
 }

@@ -51,7 +51,7 @@ class Helper {
     }
     
     class func saveUserDetails(object: LoginResponse, password:String?) {
-        let temp = LoginResponse(status: object.status, message: object.message, email: object.email, password: password, firstName: object.firstName, lastName: object.lastName, birthday: object.birthday, gender: object.gender, id: object.id, cover: object.cover, avatar: object.avatar, bio: object.bio)
+        let temp = LoginResponse(status: object.status, message: object.message, email: object.email, password: password, firstName: object.firstName, lastName: object.lastName, birthday: object.birthday, gender: object.gender, id: object.id, cover: object.cover, avatar: object.avatar, bio: object.bio, allow_friends: object.allow_friends, allow_follow: object.allow_follow)
         
     let encoder = JSONEncoder()
         if let encoded = try? encoder.encode(temp) {

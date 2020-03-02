@@ -21,6 +21,8 @@ class EditVC: UITableViewController, UIImagePickerControllerDelegate, UINavigati
     @IBOutlet weak var passTF: UITextField!
     @IBOutlet weak var birthDayTF: UITextField!
     @IBOutlet weak var genderTF: UITextField!
+    @IBOutlet weak var friendsSwitch: UISwitch!
+    @IBOutlet weak var followSwitch: UISwitch!
     
     var datePicker: UIDatePicker!
     var genderPicker: UIPickerView!
@@ -101,13 +103,22 @@ class EditVC: UITableViewController, UIImagePickerControllerDelegate, UINavigati
         let email = Helper.getUserDetails()?.email,
         let birthday = Helper.getUserDetails()?.birthday,
         let gender = Helper.getUserDetails()?.gender,
-        let pass = Helper.getUserDetails()?.password
+        let pass = Helper.getUserDetails()?.password,
+        let allowFriends = Helper.getUserDetails()?.allow_friends,
+        let allowFollow = Helper.getUserDetails()?.allow_follow
         else { return }
         
         firstNameTF.text = firstName.capitalized
         lastNameTF.text = lastName.capitalized
         emailTF.text = email
         passTF.text = pass
+        
+        if Int(allowFriends) == 0 {
+            friendsSwitch.isOn = false
+        }
+        if Int(allowFollow) == 0 {
+            followSwitch.isOn = false
+        }
         
         if coverImageUrl.count > 10 {
             isCoverAva = true
@@ -334,12 +345,17 @@ class EditVC: UITableViewController, UIImagePickerControllerDelegate, UINavigati
         let firstName = firstNameTF.text!
         let lastName = lastNameTF.text!
         let birthday = birthDayTF.text!
+        
         var genderTemp = ""
         if genderTF.text == "Female" {
             genderTemp = "1"
         } else {
             genderTemp = "2"
         }
+        
+        let allowFriends = friendsSwitch.isOn ? "1" : "0"
+        let allowFollow = followSwitch.isOn ? "1" : "0"
+        
         let gender = genderTemp
         let password = passTF.text!
         
@@ -355,7 +371,7 @@ class EditVC: UITableViewController, UIImagePickerControllerDelegate, UINavigati
             
         } else {
             
-                ApiClient.shared.updateUser(id: id, email: email, password: password, isPass: isPasswordChanged.description, fname: firstName, lName: lastName, birthday: birthday, gender: gender) { (response:LoginResponse?, error) in
+                ApiClient.shared.updateUser(id: id, email: email, password: password, isPass: isPasswordChanged.description, fname: firstName, lName: lastName, birthday: birthday, gender: gender, allowFriends: allowFriends, allowFollow: allowFollow) { (response:LoginResponse?, error) in
                 DispatchQueue.main.async {
                            if error != nil {
                                Helper.showAlert(title: "Data Error", message: error!.localizedDescription, in: self)
@@ -365,8 +381,11 @@ class EditVC: UITableViewController, UIImagePickerControllerDelegate, UINavigati
                                            if response?.status == "200" {
                                             print("updateUser == \(response!)")
                                             Helper.saveUserDetails(object: response!, password: password)
-                                        profileUpdateCallback()
-                                          Helper.showAlert(title: "Success", message: (response?.message)!, in: self)
+                                        
+//                                          Helper.showAlert(title: "Success", message: (response?.message)!, in: self)
+                                            self.dismiss(animated: true, completion: {
+                                            profileUpdateCallback()
+                                            })
 
                                            } else {
                                                Helper.showAlert(title: "Error", message: (response?.message)!, in: self)
