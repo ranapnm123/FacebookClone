@@ -424,5 +424,79 @@ class ApiClient {
         }.resume()
     }
     
+    func updateFollowUser<T:Codable>(action:String, userId: String, followUserId: String, completion:@escaping((T?, Error?)->Void)) {
+        guard let url = URL.init(string: "\(baseUrl)/friends.php") else {
+            return
+        }
+        let params = "action=\(action)&user_id=\(userId)&follow_id=\(followUserId)"
+        
+        var request = URLRequest.init(url: url)
+        request.httpMethod = "POST"
+        request.httpBody = (params.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed))?.data(using: .utf8)
+        
+        URLSession.shared.dataTask(with: request) { (data, response, error) in
+            if error != nil {
+                completion(nil, error)
+            }
+            
+            do {
+                let json = try JSONDecoder().decode(T.self, from: data!)
+                completion(json, nil)
+            } catch {
+                completion(nil, error)
+            }
+        }.resume()
+        
+    }
+    
+    func report<T:Codable>(postId:String, userId: String, reason: String, byUserId: String, completion:@escaping((T?, Error?)->Void)) {
+           guard let url = URL.init(string: "\(baseUrl)/reports.php") else {
+               return
+           }
+           let params = "post_id=\(postId)&user_id=\(userId)&reason=\(reason)&byUser_id=\(byUserId)"
+           
+           var request = URLRequest.init(url: url)
+           request.httpMethod = "POST"
+           request.httpBody = (params.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed))?.data(using: .utf8)
+           
+           URLSession.shared.dataTask(with: request) { (data, response, error) in
+               if error != nil {
+                   completion(nil, error)
+               }
+               
+               do {
+                   let json = try JSONDecoder().decode(T.self, from: data!)
+                   completion(json, nil)
+               } catch {
+                   completion(nil, error)
+               }
+           }.resume()
+           
+       }
+    
+    func getRecommendedFriends<T:Codable>(action:String, userId: String, offset:String, limit:String, completion:@escaping((T?, Error?)->Void)) {
+        guard let url = URL.init(string: "\(baseUrl)/friends.php") else {
+            return
+        }
+        let params = "action=\(action)&id=\(userId)&offset=\(offset)&limit=\(limit)"
+
+        var request = URLRequest.init(url: url)
+        request.httpMethod = "POST"
+        request.httpBody = (params.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed))?.data(using: .utf8)
+        
+        URLSession.shared.dataTask(with: request) { (data, response, error) in
+            if error != nil {
+                completion(nil, error)
+            }
+            
+            do {
+                let json = try JSONDecoder().decode(T.self, from: data!)
+                completion(json, nil)
+            } catch {
+                completion(nil, error)
+            }
+        }.resume()
+        
+    }
 
 }

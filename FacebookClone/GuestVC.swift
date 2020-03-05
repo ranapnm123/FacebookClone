@@ -10,6 +10,11 @@ import UIKit
 
 class GuestVC: UITableViewController {
 
+    struct FollowUser:Codable {
+        let status:  String
+        let message: String
+    }
+    
     var friendRequestCallback = {(status:Int)->Void in}
 
     @IBOutlet weak var headerView: UIView!
@@ -30,6 +35,7 @@ class GuestVC: UITableViewController {
     var bio = String()
     var allowFriends = Int()
     var allowFollow = Int()
+    var isfollowed = Int()
     
     var posts = [Post]()
     var skip = 0
@@ -90,6 +96,12 @@ class GuestVC: UITableViewController {
         
         if allowFollow == 0 {
             followButton.isEnabled = false
+        }
+        
+        
+        if isfollowed != 0  {
+            button(with: followButton, image: "follow.png", tintColor: Helper().facebookColor, title: "Following")
+            followButton.isEnabled = true
         }
         
         fullNameLabel.text = firstName.capitalized + " " + lastName.capitalized
@@ -348,8 +360,87 @@ class GuestVC: UITableViewController {
             }
 
     
-    
+    @IBAction func followButtonAction(_ sender: UIButton)  {
+        
+        if isfollowed != 0 {
+            button(with: followButton, image: "unfollow.png", tintColor: .darkGray, title: "Follow")
+        } else {
+            button(with: followButton, image: "follow.png", tintColor: Helper().facebookColor, title: "Following")
+        }
+        
+        let status = isfollowed != 0 ? "unfollow" : "follow"
 
+        guard let userId = Helper.getUserDetails()?.id else {
+            return
+        }
+        let followUserId = id
+        
+        ApiClient.shared.updateFollowUser(action: status, userId: userId, followUserId: String(followUserId)) { (response:FollowUser?, error) in
+            if error != nil {
+                DispatchQueue.main.async {
+                Helper.showAlert(title: "Error", message: response!.message, in: self)
+
+                }
+                return
+            }
+            
+                DispatchQueue.main.async {
+//                Helper.showAlert(title: "Success", message: response!.message, in: self)
+                    self.isfollowed = self.isfollowed != 0 ? 0 : self.id
+                }
+        }
+    }
+
+    fileprivate func showAlertToReport(postId: String) {
+        let alert = UIAlertController.init(title: "Report", message: "Please explain the reason", preferredStyle: .alert)
+        let cancel = UIAlertAction.init(title: "Cancel", style: .cancel) { (action) in
+            
+        }
+        let report = UIAlertAction.init(title: "Send", style: .default) { (action) in
+            self.report(postId: postId, userId: String(self.id), reason: alert.textFields!.first!.text!)
+        }
+        alert.addAction(cancel)
+        alert.addAction(report)
+        
+        alert.addTextField(configurationHandler: { textField in
+            textField.placeholder = "Please provide more details"
+            textField.font = UIFont(name: "HelveticaNeue-Regular", size: 17)
+        })
+        
+        
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    @IBAction func moreButtonAction(_ sender: Any) {
+        Helper().showActionSheet(options: ["Report User"], isCancel: true, destructiveIndexes: [3], title: nil, message: nil, showIn: self) { (action) in
+            if action == 0 {
+                self.showAlertToReport(postId: "0")
+            }
+        }
+    }
+    
+    @IBAction func optionsButtonAction(_ sender: Any) {
+        guard let postId = self.posts[(sender as AnyObject).tag].postId else { return }
+        Helper().showActionSheet(options: ["Report Post"], isCancel: true, destructiveIndexes: [3], title: nil, message: nil, showIn: self) { (action) in
+                   if action == 0 {
+                       self.showAlertToReport(postId: postId)
+                   }
+               }
+    }
+    
+    func report(postId:String, userId:String, reason:String) {
+        guard let byUserId = Helper.getUserDetails()?.id else { return }
+        ApiClient.shared.report(postId: postId, userId: userId, reason: reason, byUserId: byUserId) { (response: FollowUser?, error) in
+            if error != nil {
+                return
+            }
+            
+            if response?.status == "200" {
+                print("\(response?.message ?? "")")
+            }
+        }
+        
+    }
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -388,6 +479,8 @@ class GuestVC: UITableViewController {
             cell.likeButton.setImage(UIImage(named:"unlike.png"), for: .normal)
             cell.likeButton.tintColor = .darkGray
         }
+        
+        cell.optionButton.tag = indexPath.row
         
         return cell
     }

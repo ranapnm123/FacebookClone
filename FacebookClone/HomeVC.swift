@@ -346,6 +346,19 @@ class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePick
     @IBAction func addBioAction() {
         Helper.instantiateViewController(identifier: "BioVC", animated: true, modalStyle: .overCurrentContext, by: self, completion: nil)
     }
+    
+    @IBAction func moreButtonAction(_ sender: Any) {
+        Helper().showActionSheet(options: ["Logout"], isCancel: true, destructiveIndexes: [0], title: nil, message: nil, showIn: self) { (action) in
+            switch action {
+            case 0:
+            print("logout")
+            Helper().removeUserDetails()
+            self.dismiss(animated: true, completion: nil)
+            default: break
+            }
+        }
+    }
+    
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {

@@ -50,6 +50,7 @@ class Helper {
         vc.present(viewController, animated: animated, completion: completion)
     }
     
+    
     class func saveUserDetails(object: LoginResponse, password:String?) {
         let temp = LoginResponse(status: object.status, message: object.message, email: object.email, password: password, firstName: object.firstName, lastName: object.lastName, birthday: object.birthday, gender: object.gender, id: object.id, cover: object.cover, avatar: object.avatar, bio: object.bio, allow_friends: object.allow_friends, allow_follow: object.allow_follow)
         
@@ -69,6 +70,11 @@ class Helper {
         }
     }
         return nil
+    }
+    
+    func removeUserDetails() {
+        let defaults = UserDefaults.standard
+        defaults.removeObject(forKey: currentUserDetails)
     }
     
     class func loadFullname(firstName: String, lastName:String, showIn label:UILabel) {

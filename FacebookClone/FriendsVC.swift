@@ -31,7 +31,7 @@ struct User:Codable {
     let request_receiver: Int?
     let friendship_sender: Int?
     let friendship_receiver: Int?
-    
+    let followed_user: Int?
 }
 
 struct requestCodable: Codable {
@@ -39,6 +39,7 @@ struct requestCodable: Codable {
     let message: String?
     var requests:[requestUser]?
 }
+
 
 struct requestUser:Codable {
     let id: Int
@@ -50,8 +51,36 @@ struct requestUser:Codable {
     let cover: String?
     let avatar: String?
     let bio:String?
+    let allow_friends: Int?
+    let allow_follow: Int?
     let date_created: String
+    let request_sender: Int?
+    let request_receiver: Int?
     let requested:Int?
+    let followed_user: Int?
+}
+
+struct recommendedFriendCodable: Codable {
+    let status: String
+    let message: String?
+    var users:[recommendedUser]?
+}
+
+struct recommendedUser:Codable {
+    let id: Int
+    let email: String
+    let firstName: String
+    let lastName: String
+    let birthday:String?
+    let gender:String
+    let cover: String?
+    let avatar: String?
+    let bio:String?
+    let allow_friends: Int?
+    let allow_follow: Int?
+    let request_sender: Int?
+    let request_receiver: Int?
+    let followed_user: Int?
 }
 
 class FriendsVC: UIViewController, UISearchBarDelegate {
@@ -73,9 +102,12 @@ class FriendsVC: UIViewController, UISearchBarDelegate {
     var isLoading = false
     var searchResult:searchResponseCodable?
     var friendshipStatus = [Int]()
-    
+    var searchText = String()
     var requestResult:requestCodable?
-    var requestedHeaders = ["FRIEND REQUESTS"]
+    var recommendedFriendResult:recommendedFriendCodable?
+    var recommendedFriendshipStatus = [Int]()
+
+    var sections = ["FRIEND REQUESTS", "PEOPLE YOU MAY KNOW"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -86,11 +118,13 @@ class FriendsVC: UIViewController, UISearchBarDelegate {
         createSearchBar()
         
         getFriendRequests()
+        getRecommendedFriends()
     }
     
     @objc func handleRefresh(_ refreshControl: UIRefreshControl) {
         
         getFriendRequests()
+        getRecommendedFriends()
 
     }
     
@@ -139,6 +173,48 @@ class FriendsVC: UIViewController, UISearchBarDelegate {
                     self.isLoading = false
                 }
 //            }
+        }
+    }
+    
+    fileprivate func getRecommendedFriends() {
+        if refreshControl.isRefreshing {
+            refreshControl.endRefreshing()
+        }
+        guard let id = Helper.getUserDetails()?.id else {
+            isLoading = false
+            return
+        }
+        ApiClient.shared.getRecommendedFriends(action: "recommended", userId: id, offset: String(0), limit: String(10)) { (response:recommendedFriendCodable?, error) in
+            if error != nil {
+                 DispatchQueue.main.async {
+                    Helper.showAlert(title: "Error", message: error!.localizedDescription, in: self)
+                }
+                return
+            }
+            self.recommendedFriendResult?.users?.removeAll(keepingCapacity: false)
+            self.recommendedFriendshipStatus.removeAll(keepingCapacity: false)
+            
+            if let _ = response?.users {
+            self.recommendedFriendResult = response
+                for user in self.recommendedFriendResult!.users! {
+                    //request sender is current user
+                    if user.request_sender != nil && user.request_sender == Int(id) {
+                        self.recommendedFriendshipStatus.append(1)
+                        
+                        //request receiver is current user
+                    } else if user.request_receiver != nil && user.request_receiver == Int(id) {
+                        self.recommendedFriendshipStatus.append(2)
+                        
+                    }  else {
+                      self.recommendedFriendshipStatus.append(0)
+                    }
+                }
+
+                DispatchQueue.main.async {
+                            self.friendsTableView.reloadData()
+                }
+            }
+                
         }
     }
     
@@ -199,16 +275,23 @@ class FriendsVC: UIViewController, UISearchBarDelegate {
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        
+        self.searchText = searchBar.text!
+        
+        self.searchUsers()
+        
+    }
+    
+    func searchUsers() {
         isLoading = true
         guard let id = Helper.getUserDetails()?.id else {
             isLoading = false
             return
         }
-        let name = searchBar.text!
-        
-        searchUsers(id, name)
-        
+        searchUsers(id, self.searchText)
     }
+    
+    
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         searchBar.setShowsCancelButton(true, animated: true)
         
@@ -311,6 +394,8 @@ class FriendsVC: UIViewController, UISearchBarDelegate {
                                 self.searchTableView.reloadRows(at: [IndexPath(row: indexPathRow, section: 0)], with: .automatic)
                                 self.searchTableView.endUpdates()
                                 self.getFriendRequests()
+                                } else {
+                                    
                                 }
                                 
                                }
@@ -346,8 +431,9 @@ class FriendsVC: UIViewController, UISearchBarDelegate {
             guest.coverPath = (searchResult?.users?[indexpath.row])!.cover ?? ""
             guest.bio = (searchResult?.users?[indexpath.row])!.bio ?? ""
             guest.friendshipStatus = friendshipStatus[indexpath.row]
-            guest.allowFriends = (searchResult?.users?[indexpath.row])!.allow_friends!
-            guest.allowFollow = (searchResult?.users?[indexpath.row])!.allow_follow!
+            guest.allowFriends = (searchResult?.users?[indexpath.row])!.allow_friends ?? 1
+            guest.allowFollow = (searchResult?.users?[indexpath.row])!.allow_follow ?? 1
+            guest.isfollowed = (searchResult?.users?[indexpath.row])!.followed_user ?? 0
             guest.friendRequestCallback = { status in
                 if status == 1 {
                     self.friendshipStatus.insert(1, at: indexpath.row)
@@ -369,6 +455,25 @@ class FriendsVC: UIViewController, UISearchBarDelegate {
             guest.coverPath = (requestResult?.requests?[indexpath.row])!.cover ?? ""
             guest.bio = (requestResult?.requests?[indexpath.row])!.bio ?? ""
             guest.friendshipStatus = friendshipStatus[indexpath.row] //request is received by current user
+            guest.allowFriends = (requestResult?.requests?[indexpath.row])!.allow_friends ?? 1
+            guest.allowFollow = (requestResult?.requests?[indexpath.row])!.allow_follow ?? 1
+            guest.isfollowed = (requestResult?.requests?[indexpath.row])!.followed_user ?? 0
+            guest.friendRequestCallback = { status in
+                self.getFriendRequests()
+            }
+        } else if segue.identifier == "GuestVC_RecommendedFriendCell" {
+            guard let indexpath = friendsTableView.indexPathForSelectedRow else { return }
+            let guest = segue.destination as! GuestVC
+            guest.id = (recommendedFriendResult?.users?[indexpath.row])!.id
+            guest.firstName = (recommendedFriendResult?.users?[indexpath.row])!.firstName
+            guest.lastName = (recommendedFriendResult?.users?[indexpath.row])!.lastName
+            guest.avaPath = (recommendedFriendResult?.users?[indexpath.row])!.avatar ?? ""
+            guest.coverPath = (recommendedFriendResult?.users?[indexpath.row])!.cover ?? ""
+            guest.bio = (recommendedFriendResult?.users?[indexpath.row])!.bio ?? ""
+            guest.friendshipStatus = recommendedFriendshipStatus[indexpath.row] //request is received by current user
+            guest.allowFriends = (recommendedFriendResult?.users?[indexpath.row])!.allow_friends ?? 1
+            guest.allowFollow = (recommendedFriendResult?.users?[indexpath.row])!.allow_follow ?? 1
+            guest.isfollowed = (recommendedFriendResult?.users?[indexpath.row])!.followed_user ?? 0
             guest.friendRequestCallback = { status in
                 self.getFriendRequests()
             }
@@ -377,6 +482,9 @@ class FriendsVC: UIViewController, UISearchBarDelegate {
         
     }
     
+    @IBAction func moreButtonAction(_ sender: Any) {
+        
+    }
     
     
 }
@@ -386,7 +494,7 @@ extension FriendsVC:UITableViewDelegate, UITableViewDataSource {
         if tableView == searchTableView {
         return (searchResult?.users?.count ?? 0)
         } else if tableView == friendsTableView {
-            return (requestResult?.requests?.count ?? 0)
+            return (section == 0 ? requestResult?.requests?.count ?? 0 : recommendedFriendResult?.users?.count ?? 0)
         }
         else {
             return 0
@@ -429,7 +537,9 @@ extension FriendsVC:UITableViewDelegate, UITableViewDataSource {
             
             
         return cell
+            
         } else if tableView == friendsTableView {
+            if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "friendRequestCell", for: indexPath) as! friendRequestCell
             
                 cell.confirmButton.isHidden = false
@@ -446,10 +556,57 @@ extension FriendsVC:UITableViewDelegate, UITableViewDataSource {
             cell.executeFriendRequest = friendRequestAction(action:status:cell:)
             
             return cell
+                
+            } else if indexPath.section == 1 {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "RecommendedFriendCell", for: indexPath) as! RecommendedFriendCell
+                
+                let user = recommendedFriendResult?.users![indexPath.row]
+                
+                cell.fullNameLabel.text = "\(user?.firstName.capitalized ?? "") \(user?.lastName.capitalized ?? "")"
+                
+//                recommendedFriendshipStatus.insert(2, at: indexPath.row)
+                
+                if let url = user?.avatar, url.count > 10 {
+                        cell.profileImageView.downloaded(from: URL(string: url)!, contentMode: .scaleAspectFit)
+                    }
+                
+                if recommendedFriendshipStatus[indexPath.row] == 0 {
+                    cell.addfriendButton.isHidden = false
+                    cell.deleteButton.isHidden = false
+                    cell.messageLabel.isHidden = true
+                } else if recommendedFriendshipStatus[indexPath.row] == 1 {
+                    cell.addfriendButton.isHidden = true
+                    cell.deleteButton.isHidden = true
+                    cell.messageLabel.isHidden = false
+                    cell.messageLabel.text = "Request sent."
+                }
+                
+                cell.executeFriendRecommendation = { (action, cell) in
+                    
+                    guard let currentUserId = Helper.getUserDetails()?.id else { return }
+
+                    if action == "add" {
+                        self.recommendedFriendshipStatus.insert(1, at: indexPath.row)
+                        self.updateFriendshipRequest(action: "add", userId: currentUserId, friendId: user!.id, indexPathRow: indexPath.row)
+                    } else if action == "remove" {
+                        
+                        self.recommendedFriendResult?.users?.remove(at: indexPath.row)
+                        self.recommendedFriendshipStatus.remove(at: indexPath.row)
+                        
+                        self.friendsTableView.beginUpdates()
+                        self.friendsTableView.deleteRows(at: [indexPath], with: .automatic)
+                        self.friendsTableView.endUpdates()
+                    }
+                }
+
+                return cell
+
+            }
         }
         else {
             return UITableViewCell()
         }
+        return UITableViewCell()
     }
     
     
@@ -459,13 +616,19 @@ extension FriendsVC:UITableViewDelegate, UITableViewDataSource {
         }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return sections.count
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if tableView == friendsTableView {
-            if requestResult?.requests != nil && section < (requestResult?.requests!.count)! {
-                return requestedHeaders[section]
+            if section == 0 {
+            if requestResult?.requests != nil  {
+                return sections[section]
+                }
+            } else if section == 1 {
+                if recommendedFriendResult?.users != nil {
+                return sections[section]
+                }
             }
         }
         return nil
