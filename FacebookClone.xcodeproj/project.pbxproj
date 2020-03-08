@@ -14,6 +14,10 @@
 		13411BA923F721010058D1F2 /* FriendsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13411BA823F721010058D1F2 /* FriendsVC.swift */; };
 		13411BAB23F724DE0058D1F2 /* SearchUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13411BAA23F724DE0058D1F2 /* SearchUserCell.swift */; };
 		134D0A1F2410E7B20070853F /* RecommendedFriendCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134D0A1E2410E7B20070853F /* RecommendedFriendCell.swift */; };
+		134D0A212412F31E0070853F /* NotificationsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134D0A202412F31E0070853F /* NotificationsVC.swift */; };
+		134D0A232412F33B0070853F /* NotificationsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134D0A222412F33B0070853F /* NotificationsCell.swift */; };
+		134D0A2724154D340070853F /* MyFriendCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134D0A2624154D340070853F /* MyFriendCell.swift */; };
+		134D0A2B241554BF0070853F /* MyFriendVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134D0A2A241554BF0070853F /* MyFriendVC.swift */; };
 		134F5B4F23EC70F900570569 /* BioVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134F5B4E23EC70F900570569 /* BioVC.swift */; };
 		134F5B5123EDFD4D00570569 /* PostVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134F5B5023EDFD4D00570569 /* PostVC.swift */; };
 		13AEAD3223E1E0FC00757BE8 /* HomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13AEAD3123E1E0FC00757BE8 /* HomeVC.swift */; };
@@ -39,6 +43,10 @@
 		13411BA823F721010058D1F2 /* FriendsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsVC.swift; sourceTree = "<group>"; };
 		13411BAA23F724DE0058D1F2 /* SearchUserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchUserCell.swift; sourceTree = "<group>"; };
 		134D0A1E2410E7B20070853F /* RecommendedFriendCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendedFriendCell.swift; sourceTree = "<group>"; };
+		134D0A202412F31E0070853F /* NotificationsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsVC.swift; sourceTree = "<group>"; };
+		134D0A222412F33B0070853F /* NotificationsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsCell.swift; sourceTree = "<group>"; };
+		134D0A2624154D340070853F /* MyFriendCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyFriendCell.swift; sourceTree = "<group>"; };
+		134D0A2A241554BF0070853F /* MyFriendVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyFriendVC.swift; sourceTree = "<group>"; };
 		134F5B4E23EC70F900570569 /* BioVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BioVC.swift; sourceTree = "<group>"; };
 		134F5B5023EDFD4D00570569 /* PostVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostVC.swift; sourceTree = "<group>"; };
 		13AEAD3123E1E0FC00757BE8 /* HomeVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeVC.swift; sourceTree = "<group>"; };
@@ -99,6 +107,8 @@
 				13411BA423F59BF10058D1F2 /* CommentsVC.swift */,
 				13411BA823F721010058D1F2 /* FriendsVC.swift */,
 				130B49D323FD9AEC004BC9C0 /* GuestVC.swift */,
+				134D0A202412F31E0070853F /* NotificationsVC.swift */,
+				134D0A2A241554BF0070853F /* MyFriendVC.swift */,
 				D36ED4E923DEB8F600EB5DCE /* Helper.swift */,
 				D36ED4EF23DEBE0600EB5DCE /* ApiClient.swift */,
 				13B83BE223F1C34200A20AFB /* NoPicCell.swift */,
@@ -107,6 +117,8 @@
 				13411BAA23F724DE0058D1F2 /* SearchUserCell.swift */,
 				130B49D523FEE5C5004BC9C0 /* friendRequestCell.swift */,
 				134D0A1E2410E7B20070853F /* RecommendedFriendCell.swift */,
+				134D0A222412F33B0070853F /* NotificationsCell.swift */,
+				134D0A2624154D340070853F /* MyFriendCell.swift */,
 				D36ED4ED23DEB90B00EB5DCE /* Main.storyboard */,
 				13F6716723D75DD2005B3A31 /* Assets.xcassets */,
 				13F6716923D75DD2005B3A31 /* LaunchScreen.storyboard */,
@@ -190,13 +202,17 @@
 				13B83BE123EEF5D800A20AFB /* EditVC.swift in Sources */,
 				13B83BE423F1C34300A20AFB /* NoPicCell.swift in Sources */,
 				D36ED4EA23DEB8F600EB5DCE /* RegisterVC.swift in Sources */,
+				134D0A2B241554BF0070853F /* MyFriendVC.swift in Sources */,
+				134D0A232412F33B0070853F /* NotificationsCell.swift in Sources */,
 				13411BAB23F724DE0058D1F2 /* SearchUserCell.swift in Sources */,
 				134F5B4F23EC70F900570569 /* BioVC.swift in Sources */,
 				13AEAD3223E1E0FC00757BE8 /* HomeVC.swift in Sources */,
 				13F6715F23D75DCD005B3A31 /* AppDelegate.swift in Sources */,
+				134D0A2724154D340070853F /* MyFriendCell.swift in Sources */,
 				D36ED4EC23DEB8F600EB5DCE /* Helper.swift in Sources */,
 				134D0A1F2410E7B20070853F /* RecommendedFriendCell.swift in Sources */,
 				D36ED4EB23DEB8F600EB5DCE /* LoginVC.swift in Sources */,
+				134D0A212412F31E0070853F /* NotificationsVC.swift in Sources */,
 				13B83BE523F1C34300A20AFB /* PicCell.swift in Sources */,
 				130B49D423FD9AEC004BC9C0 /* GuestVC.swift in Sources */,
 				134F5B5123EDFD4D00570569 /* PostVC.swift in Sources */,

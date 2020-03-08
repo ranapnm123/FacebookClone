@@ -76,6 +76,12 @@ class BioVC: UIViewController, UITextViewDelegate {
     
     func updateBio() {
         guard let id = Helper.getUserDetails()?.id else { return }
+        
+        //send bio notification to server
+            ApiClient.shared.updateNotification(action: "insert", byUserId: id, userId: id, type: "bio") { (response:NotificationCodable?, error) in
+                
+            }
+        
         ApiClient.shared.updateBio(id: id, bio: bioTexView.text) { (response:LoginResponse?, error) in
             if error != nil {
             

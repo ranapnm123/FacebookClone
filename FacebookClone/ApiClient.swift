@@ -499,4 +499,103 @@ class ApiClient {
         
     }
 
+    func updateNotification<T:Codable>(action:String,byUserId:String, userId: String, type:String, completion:@escaping((T?, Error?)->Void)) {
+          guard let url = URL.init(string: "\(baseUrl)/notifications.php") else {
+              return
+          }
+          let params = "action=\(action)&byUser_id=\(byUserId)&user_id=\(userId)&type=\(type)"
+
+          var request = URLRequest.init(url: url)
+          request.httpMethod = "POST"
+          request.httpBody = (params.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed))?.data(using: .utf8)
+          
+          URLSession.shared.dataTask(with: request) { (data, response, error) in
+              if error != nil {
+                  completion(nil, error)
+              }
+              
+              do {
+                  let json = try JSONDecoder().decode(T.self, from: data!)
+                  completion(json, nil)
+              } catch {
+                  completion(nil, error)
+              }
+          }.resume()
+          
+      }
+    
+    func getNotification<T:Codable>(action:String,byUserId:String, userId: String, type:String, offset:String, limit:String, completion:@escaping((T?, Error?)->Void)) {
+        guard let url = URL.init(string: "\(baseUrl)/notifications.php") else {
+            return
+        }
+        let params = "action=\(action)&byUser_id=\(byUserId)&user_id=\(userId)&type=\(type)&offset=\(offset)&limit=\(limit)"
+
+        var request = URLRequest.init(url: url)
+        request.httpMethod = "POST"
+        request.httpBody = (params.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed))?.data(using: .utf8)
+        
+        URLSession.shared.dataTask(with: request) { (data, response, error) in
+            if error != nil {
+                completion(nil, error)
+            }
+            
+            do {
+                let json = try JSONDecoder().decode(T.self, from: data!)
+                completion(json, nil)
+            } catch {
+                completion(nil, error)
+            }
+        }.resume()
+        
+    }
+    
+    func updateNotificationViewed<T:Codable>(action:String,byUserId:String, userId: String, viewed:String, notifId:String, type:String, completion:@escaping((T?, Error?)->Void)) {
+        guard let url = URL.init(string: "\(baseUrl)/notifications.php") else {
+            return
+        }
+        let params = "action=\(action)&byUser_id=\(byUserId)&user_id=\(userId)&type=\(type)&viewed=\(viewed)&id=\(notifId)"
+
+        var request = URLRequest.init(url: url)
+        request.httpMethod = "POST"
+        request.httpBody = (params.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed))?.data(using: .utf8)
+        
+        URLSession.shared.dataTask(with: request) { (data, response, error) in
+            if error != nil {
+                completion(nil, error)
+            }
+            
+            do {
+                let json = try JSONDecoder().decode(T.self, from: data!)
+                completion(json, nil)
+            } catch {
+                completion(nil, error)
+            }
+        }.resume()
+        
+    }
+    
+    func getMyFriends<T:Codable>(action:String,userId:String, limit: String, offset:String, completion:@escaping((T?, Error?)->Void)) {
+        guard let url = URL.init(string: "\(baseUrl)/friends.php") else {
+            return
+        }
+        let params = "action=\(action)&id=\(userId)&limit=\(limit)&offset=\(offset)"
+
+        var request = URLRequest.init(url: url)
+        request.httpMethod = "POST"
+        request.httpBody = (params.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed))?.data(using: .utf8)
+        
+        URLSession.shared.dataTask(with: request) { (data, response, error) in
+            if error != nil {
+                completion(nil, error)
+            }
+            
+            do {
+                let json = try JSONDecoder().decode(T.self, from: data!)
+                completion(json, nil)
+            } catch {
+                completion(nil, error)
+            }
+        }.resume()
+        
+    }
 }

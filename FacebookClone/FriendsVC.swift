@@ -83,6 +83,11 @@ struct recommendedUser:Codable {
     let followed_user: Int?
 }
 
+struct NotificationCodable: Codable {
+    let status: String
+    let message: String
+}
+
 class FriendsVC: UIViewController, UISearchBarDelegate {
 
     @IBOutlet weak var searchTableView: UITableView!
@@ -378,6 +383,18 @@ class FriendsVC: UIViewController, UISearchBarDelegate {
     }
     
     func updateFriendshipRequest(action:String, userId:String, friendId:Int, indexPathRow:Int) {
+        //send friend notification to server
+        if action == "confirm" {
+            ApiClient.shared.updateNotification(action: "insert", byUserId: userId, userId: String(friendId), type: "friend") { (response:NotificationCodable?, error) in
+                
+            }
+        } else if action == "delete" {
+            ApiClient.shared.updateNotification(action: "delete", byUserId: userId, userId: String(friendId), type: "friend") { (response:NotificationCodable?, error) in
+                
+            }
+        }
+        
+        
         ApiClient.shared.friendRequest(action: action, userId: userId, friendId: String(friendId)) { (response:searchResponseCodable?, error) in
                     if error != nil {
                                DispatchQueue.main.async {
@@ -512,7 +529,9 @@ extension FriendsVC:UITableViewDelegate, UITableViewDataSource {
         
         if let url = user?.avatar, url.count > 10 {
             cell.profileImageView.downloaded(from: URL(string: url)!, contentMode: .scaleAspectFit)
-        }
+        } else {
+            cell.profileImageView.image = UIImage(named: "user.png")
+            }
             //if other user
             if searchResult?.users![indexPath.row].allow_friends == 0 {
                 cell.friendButton.isHidden = true

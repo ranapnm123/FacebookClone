@@ -59,7 +59,26 @@ struct Post {
 class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
 
    
-    
+    struct MyFriendCodable:Codable {
+        let status: String?
+        let message: String?
+        let friends: [MyFriend]?
+    }
+
+    struct MyFriend:Codable {
+        let id: Int?
+        let user_id : Int?
+        let friend_id: Int?
+        let date_created: String?
+        let email: String?
+        let firstName: String?
+        let lastName: String?
+        let birthday:String?
+        let gender:String?
+        let cover: String?
+        let avatar: String?
+        let bio:String?
+    }
     
       
     @IBOutlet weak var coverImageView:UIImageView!
@@ -79,11 +98,19 @@ class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePick
     var isLoading = false
     var liked = [Int]()
     
+    var myFriends = MyFriendCodable(status: nil, message: nil, friends: nil)
+    var myFriendSkip = 0
+    var myFriendLimit = 6
     
     
     var posts = [Post]()
     var skip = 0
     var limit = 4
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        navigationController?.setNavigationBarHidden(true, animated: true)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -91,7 +118,7 @@ class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePick
 //        overrideUserInterfaceStyle = .dark
         configureProfileImageView()
         loadUser()
-        
+        loadMyFriends()
         bioAddedCallback = { bio in
             if bio.isEmpty {
                 self.bioLabel.isHidden = true
@@ -321,7 +348,10 @@ class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePick
     
     func deleteBio() {
         guard let id = Helper.getUserDetails()?.id else { return }
-        
+        //send bio notification to server
+        ApiClient.shared.updateNotification(action: "delete", byUserId: id, userId: id, type: "bio") { (response:NotificationCodable?, error) in
+            
+        }
         ApiClient.shared.updateBio(id: id, bio: "") { (response:LoginResponse?, error) in
             if error != nil {
             
@@ -360,16 +390,75 @@ class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePick
     }
     
     // MARK: - Table view data source
-
+//section 1 = friends ans section 2 = posts
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return 2
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if section == 0 {
+            return 1
+        } else {
            return posts.count
+        }
        }
        
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.section == 0 {
+            if (myFriends.friends?.count) ?? 0 < 4 {
+                return 200
+            } else {
+                return 350
+            }
+        } else {
+            return UITableView.automaticDimension
+        }
+    }
+    
        override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        if indexPath.section == 0 {
+          let friendCell = tableView.dequeueReusableCell(withIdentifier: "MyFriendCell", for: indexPath)
+            
+            let gap: CGFloat = 15
+            var x: CGFloat = 15
+            var y: CGFloat = 50
+            let width: CGFloat = (friendCell.contentView.frame.width / 3) - 20
+            let height: CGFloat = width
+            
+            if self.myFriends.friends != nil {
+                
+            for (index, object) in (self.myFriends.friends?.enumerated())! {
+                let frame = CGRect(x: x, y: y, width: width, height: height)
+                let button = UIButton(frame: frame)
+                button.tag = index
+                button.backgroundColor = .red
+                button.setTitleColor(.black, for: .normal)
+                button.titleLabel?.font = UIFont(name: "HelveticaNeue-Medium", size: 14)
+                let fullName = "\(object.firstName!.capitalized) \(object.lastName!.capitalized)"
+                button.setTitle(fullName, for: .normal)
+                if let url = object.avatar, url.count > 10 {
+                    button.downloaded(from: URL(string: url)!, contentMode: .scaleAspectFit)
+                } else {
+                    button.setBackgroundImage(UIImage(named: "user.png"), for: .normal) 
+                    }
+                
+                button.centerVertically(gap: 20)
+                friendCell.contentView.addSubview(button)
+
+                x += gap + width
+                
+                if index == 2 {
+                    x = 15
+                    y += height + 20 + gap
+                }
+            }
+            }
+            
+            
+            return friendCell
+        } else {
+        
            let picture = posts[indexPath.row]
            
        
@@ -431,11 +520,11 @@ class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePick
             
                return cell!
            }
-           
+        }
         
        }
 
-    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+   /* override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
 //        let picture = posts[indexPath.row]
             
         
@@ -458,11 +547,13 @@ class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePick
 //                    }
 //                }
 //        }
+        if indexPath.section == 1 {
      // At the bottom...
      if (indexPath.row == self.posts.count - 1) {
      loadMore(offset: skip, limit: limit) // network request to get more data
      }
-    }
+        }
+    }*/
     
        func loadPosts(offset: Int, limit: Int) {
         
@@ -561,6 +652,17 @@ class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePick
             })
         }
         
+        
+        //send like notification to server
+        if action == "insert" {
+            ApiClient.shared.updateNotification(action: "insert", byUserId: id, userId: id, type: "like") { (response:NotificationCodable?, error) in
+                
+            }
+        } else if action == "delete" {
+            ApiClient.shared.updateNotification(action: "delete", byUserId: id, userId: id, type: "like") { (response:NotificationCodable?, error) in
+                
+            }
+        }
 
         ApiClient.shared.likePost(userId: id, postId: postId, action: action) { (response:likeCodable?, error) in
 
@@ -585,6 +687,7 @@ class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePick
             
             vc?.textString = posts[((sender as? UIButton)?.tag)!].postText
             vc?.postId = posts[((sender as? UIButton)?.tag)!].postId!
+            vc?.postOwnerId = (Helper.getUserDetails()?.id)!
             
             let indexpath = IndexPath(row: ((sender as? UIButton)?.tag)!, section: 0)
             guard let cell = tableView.cellForRow(at: indexpath) as? PicCell else {
@@ -627,4 +730,25 @@ class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePick
     }
     
     
+    @IBAction func logButtonAction(_ sender: Any) {
+        self.tabBarController?.selectedIndex = 1
+    }
+    
+    func loadMyFriends() {
+        guard let currentUserId = Helper.getUserDetails()?.id else {
+            return
+        }
+        
+        ApiClient.shared.getMyFriends(action: "friends", userId: currentUserId, limit: String(myFriendLimit), offset: String(myFriendSkip)) { (response:MyFriendCodable?, error) in
+            if error != nil {
+                return
+            }
+            
+            self.myFriends = response!
+            
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
+    }
 }

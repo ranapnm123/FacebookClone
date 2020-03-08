@@ -60,6 +60,7 @@ class CommentsVC: UIViewController {
     var comments = [Mesasge]()
     var skipForComments = 0
     var limitForComments = 10
+    var postOwnerId = String()
     
     struct insertCommentCodable: Codable {
         let status: String
@@ -151,6 +152,11 @@ class CommentsVC: UIViewController {
                
                let comment = commentTextView.text.trimmingCharacters(in: .whitespacesAndNewlines)
                
+        //send comment notification to server
+            ApiClient.shared.updateNotification(action: "insert", byUserId: id, userId: postOwnerId, type: "comment") { (response:NotificationCodable?, error) in
+                
+            }
+        
                ApiClient.shared.insertComment(userId: id, postId: postId, action: action, comment: comment) { (response:insertCommentCodable?, error) in
                    
                 if error != nil {
@@ -210,8 +216,15 @@ class CommentsVC: UIViewController {
     }
     
     func deleteComment(indexpath:IndexPath) {
-        
+        guard let id = Helper.getUserDetails()?.id else { return}
+
         let message = comments[indexpath.row]
+        
+        //send comment notification to server
+                   ApiClient.shared.updateNotification(action: "delete", byUserId: id, userId: postOwnerId, type: "comment") { (response:NotificationCodable?, error) in
+                       
+                   }
+        
         ApiClient.shared.deleteComment(commentId: String(message.commentId), action: "delete") { (response:deleteCommentCodable?, error) in
             
             if error != nil {

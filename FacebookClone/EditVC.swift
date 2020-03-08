@@ -341,6 +341,19 @@ class EditVC: UITableViewController, UIImagePickerControllerDelegate, UINavigati
         guard let id = Helper.getUserDetails()?.id else {
             return
         }
+        
+        //send avatar notification to server
+        if isProfileImageChanged == true {
+            ApiClient.shared.updateNotification(action: "insert", byUserId: id, userId: id, type: "avatar") { (response:NotificationCodable?, error) in
+                
+            }
+            //send cover notification to server
+        } else if isCoverImageChanged == true {
+            ApiClient.shared.updateNotification(action: "insert", byUserId: id, userId: id, type: "cover") { (response:NotificationCodable?, error) in
+                
+            }
+        }
+        
         let email = emailTF.text!
         let firstName = firstNameTF.text!
         let lastName = lastNameTF.text!

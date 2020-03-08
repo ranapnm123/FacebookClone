@@ -29,6 +29,7 @@ class NoPicCell: UITableViewCell {
                             self.profileImageView.image = image
                         }
                     }
+                    return
                 }
                 
                 if let image = UIImage(data: data!) {

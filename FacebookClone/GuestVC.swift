@@ -53,10 +53,10 @@ class GuestVC: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        friendButton.centerVertically()
-        followButton.centerVertically()
-        messageButton.centerVertically()
-        moreButton.centerVertically()
+        friendButton.centerVertically(gap: 10)
+        followButton.centerVertically(gap: 10)
+        messageButton.centerVertically(gap: 10)
+        moreButton.centerVertically(gap: 10)
         
        tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 563
@@ -227,7 +227,17 @@ class GuestVC: UITableViewController {
                 })
             }
             
-
+            //send like notification to server
+            if action == "insert" {
+                ApiClient.shared.updateNotification(action: "insert", byUserId: id, userId: String(self.id), type: "like") { (response:NotificationCodable?, error) in
+                    
+                }
+            } else if action == "delete" {
+                ApiClient.shared.updateNotification(action: "delete", byUserId: id, userId: String(self.id), type: "like") { (response:NotificationCodable?, error) in
+                    
+                }
+            }
+            
             ApiClient.shared.likePost(userId: id, postId: postId, action: action) { (response:likeCodable?, error) in
 
                 if error != nil {
@@ -243,6 +253,17 @@ class GuestVC: UITableViewController {
     
     
     func updateFriendshipRequest(action:String, userId:String, friendId:Int, indexPathRow:Int) {
+        //send friend notification to server
+        if action == "confirm" {
+            ApiClient.shared.updateNotification(action: "insert", byUserId: userId, userId: String(friendId), type: "friend") { (response:NotificationCodable?, error) in
+                
+            }
+        } else if action == "delete" {
+            ApiClient.shared.updateNotification(action: "delete", byUserId: userId, userId: String(friendId), type: "friend") { (response:NotificationCodable?, error) in
+                
+            }
+        }
+        
         ApiClient.shared.friendRequest(action: action, userId: userId, friendId: String(friendId)) { (response:searchResponseCodable?, error) in
                     if error != nil {
                                DispatchQueue.main.async {
@@ -375,6 +396,19 @@ class GuestVC: UITableViewController {
         }
         let followUserId = id
         
+        //send follow notification to server
+         if status == "follow" {
+               ApiClient.shared.updateNotification(action: "insert", byUserId: userId, userId: String(followUserId), type: "follow") { (response:NotificationCodable?, error) in
+                   
+                   }
+               } else if status == "unfollow" {
+               ApiClient.shared.updateNotification(action: "delete", byUserId: userId, userId: String(followUserId), type: "follow") { (response:NotificationCodable?, error) in
+                   
+                   }
+               }
+        
+        
+        
         ApiClient.shared.updateFollowUser(action: status, userId: userId, followUserId: String(followUserId)) { (response:FollowUser?, error) in
             if error != nil {
                 DispatchQueue.main.async {
@@ -495,7 +529,8 @@ class GuestVC: UITableViewController {
             
             vc?.textString = posts[((sender as? UIButton)?.tag)!].postText
             vc?.postId = posts[((sender as? UIButton)?.tag)!].postId!
-            
+            vc?.postOwnerId = posts[((sender as? UIButton)?.tag)!].postUserId
+
             let indexpath = IndexPath(row: ((sender as? UIButton)?.tag)!, section: 0)
             guard let cell = tableView.cellForRow(at: indexpath) as? PicCell else {
                 return
@@ -509,10 +544,10 @@ class GuestVC: UITableViewController {
 }
 
 extension UIButton {
-    func centerVertically() {
+    func centerVertically(gap:CGFloat) {
         self.contentEdgeInsets = UIEdgeInsets(top: 0, left: -15, bottom: 0, right: -15)
         
-        let padding = self.frame.height + 10
+        let padding = self.frame.height + gap
         
         let imageSize = self.imageView!.frame.size
         let titleSize = self.titleLabel!.frame.size
