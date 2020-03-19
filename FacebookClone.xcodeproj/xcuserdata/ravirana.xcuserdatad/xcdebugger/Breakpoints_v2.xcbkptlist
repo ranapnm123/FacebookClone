@@ -240,40 +240,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "690"
             endingLineNumber = "690"
-            landmarkName = "prepare(for:sender:)"
+            landmarkName = "likeButtonAction(_:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "14707386-6EB4-480E-A1D8-FB0086FACAD6 - b1271ec49cb4d2a"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "FacebookClone.HomeVC.prepare(for: __C.UIStoryboardSegue, sender: Swift.Optional&lt;Any&gt;) -&gt; ()"
-                  moduleName = "FacebookClone"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/ravirana/Documents/Projects/FacebookClone/FacebookClone/HomeVC.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "690"
-                  endingLineNumber = "690"
-                  offsetFromSymbolStart = "4410">
-               </Location>
-               <Location
-                  uuid = "14707386-6EB4-480E-A1D8-FB0086FACAD6 - b1271ec49cb4d2a"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "FacebookClone.HomeVC.prepare(for: __C.UIStoryboardSegue, sender: Swift.Optional&lt;Any&gt;) -&gt; ()"
-                  moduleName = "FacebookClone"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/ravirana/Documents/Projects/FacebookClone/FacebookClone/HomeVC.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "690"
-                  endingLineNumber = "690"
-                  offsetFromSymbolStart = "6694">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -288,40 +256,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "686"
             endingLineNumber = "686"
-            landmarkName = "prepare(for:sender:)"
+            landmarkName = "likeButtonAction(_:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "432EB158-373D-4A4E-9B15-BA5E7135FB32 - b1271ec49cb4d2a"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "FacebookClone.HomeVC.prepare(for: __C.UIStoryboardSegue, sender: Swift.Optional&lt;Any&gt;) -&gt; ()"
-                  moduleName = "FacebookClone"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/ravirana/Documents/Projects/FacebookClone/FacebookClone/HomeVC.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "686"
-                  endingLineNumber = "686"
-                  offsetFromSymbolStart = "1889">
-               </Location>
-               <Location
-                  uuid = "432EB158-373D-4A4E-9B15-BA5E7135FB32 - b1271ec49cb4d2a"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "FacebookClone.HomeVC.prepare(for: __C.UIStoryboardSegue, sender: Swift.Optional&lt;Any&gt;) -&gt; ()"
-                  moduleName = "FacebookClone"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/ravirana/Documents/Projects/FacebookClone/FacebookClone/HomeVC.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "686"
-                  endingLineNumber = "686"
-                  offsetFromSymbolStart = "6664">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -592,7 +528,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "386"
             endingLineNumber = "386"
-            landmarkName = "moreButtonAction(_:)"
+            landmarkName = "deleteBio()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -679,102 +615,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "4B3A76FB-14C2-4136-B36C-17E0CBC3118D"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "FacebookClone/NotificationsVC.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "227"
-            endingLineNumber = "227"
-            landmarkName = "scrollViewDidScroll(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "6AF5A8B9-072A-49AE-B9EC-BAA631D70AB3"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "FacebookClone/NotificationsVC.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "204"
-            endingLineNumber = "204"
-            landmarkName = "loadNotifications(offset:limit:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "5CF0F80E-FA58-4317-8866-92B8E494BCBB"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "FacebookClone/NotificationsVC.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "186"
-            endingLineNumber = "186"
-            landmarkName = "loadNotifications(offset:limit:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "5CF0F80E-FA58-4317-8866-92B8E494BCBB - 9e550f57f4ed5520"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 () -&gt; () in closure #1 (Swift.Optional&lt;FacebookClone.NotificationsVC.NotificationCodable&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in FacebookClone.NotificationsVC.loadNotifications(offset: Swift.Int, limit: Swift.Int) -&gt; ()"
-                  moduleName = "FacebookClone"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/ravirana/Documents/Projects/FacebookClone/FacebookClone/NotificationsVC.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "186"
-                  endingLineNumber = "186"
-                  offsetFromSymbolStart = "595">
-               </Location>
-               <Location
-                  uuid = "5CF0F80E-FA58-4317-8866-92B8E494BCBB - 9e550f57f4ed5520"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 () -&gt; () in closure #1 (Swift.Optional&lt;FacebookClone.NotificationsVC.NotificationCodable&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in FacebookClone.NotificationsVC.loadNotifications(offset: Swift.Int, limit: Swift.Int) -&gt; ()"
-                  moduleName = "FacebookClone"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/ravirana/Documents/Projects/FacebookClone/FacebookClone/NotificationsVC.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "186"
-                  endingLineNumber = "186"
-                  offsetFromSymbolStart = "643">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "C508B1DF-1FA6-4F95-884E-9C51D9E0E700"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "FacebookClone/NotificationsVC.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "179"
-            endingLineNumber = "179"
-            landmarkName = "loadNotifications(offset:limit:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "A53B7EC1-1EF3-4997-A23D-D4E05DABF12B"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
@@ -846,9 +686,9 @@
             filePath = "FacebookClone/MyFriendVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "126"
-            endingLineNumber = "126"
-            landmarkName = "removeButtonAction(_:)"
+            startingLineNumber = "127"
+            endingLineNumber = "127"
+            landmarkName = "loadMyFriends()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -864,7 +704,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "138"
             endingLineNumber = "138"
-            landmarkName = "removeButtonAction(_:)"
+            landmarkName = "loadMyFriends()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -880,7 +720,55 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "105"
             endingLineNumber = "105"
-            landmarkName = "loadMyFriends()"
+            landmarkName = "tableView(_:cellForRowAt:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "E99253F1-781D-48F4-8424-679606D8C80F"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FacebookClone/FeedVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "58"
+            endingLineNumber = "58"
+            landmarkName = "loadPosts(offset:limit:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "ECF4C495-8976-4D4F-9B99-CC93490434E6"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FacebookClone/FeedVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "226"
+            endingLineNumber = "226"
+            landmarkName = "FeedVC"
+            landmarkType = "3">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "65CE5650-C8D0-4993-8AE8-CC94E888E6D7"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FacebookClone/FeedVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "83"
+            endingLineNumber = "83"
+            landmarkName = "loadMore(offset:limit:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

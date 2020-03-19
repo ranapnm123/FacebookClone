@@ -180,9 +180,9 @@ class ApiClient {
                }.resume()
     }
     
-    func getPosts<T:Codable>(id:String, offset:String, limit:String, completion:@escaping((T?, Error?) -> Void)) {
+    func getPosts<T:Codable>(action:String, id:String, offset:String, limit:String, completion:@escaping((T?, Error?) -> Void)) {
            guard let url = NSURL.init(string: "\(baseUrl)/selectposts.php") else { return }
-           let params = "id=\(id)&offset=\(offset)&limit=\(limit)"
+           let params = "action=\(action)&id=\(id)&offset=\(offset)&limit=\(limit)"
            
            var request = URLRequest(url: url as URL)
            request.httpMethod = "POST"

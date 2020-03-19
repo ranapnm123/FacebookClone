@@ -134,7 +134,7 @@ class GuestVC: UITableViewController {
     func loadPosts(offset: Int, limit: Int) {
      
 
-        ApiClient.shared.getPosts(id: String(id), offset: String(offset), limit: String(limit)) { (response:userPostResponse?, error) in
+        ApiClient.shared.getPosts(action: "", id: String(id), offset: String(offset), limit: String(limit)) { (response:userPostResponse?, error) in
           DispatchQueue.main.async {
             if error != nil {
                 Helper.showAlert(title: "Error", message: error!.localizedDescription, in: self)
@@ -168,7 +168,7 @@ class GuestVC: UITableViewController {
         
         isLoading = true
 
-        ApiClient.shared.getPosts(id: String(id), offset: String(offset), limit: String(limit)) { (response:userPostResponse?, error) in
+        ApiClient.shared.getPosts(action: "", id: String(id), offset: String(offset), limit: String(limit)) { (response:userPostResponse?, error) in
             if error != nil {
                 self.isLoading = false
                     return

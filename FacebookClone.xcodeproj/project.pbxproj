@@ -20,6 +20,7 @@
 		134D0A2B241554BF0070853F /* MyFriendVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134D0A2A241554BF0070853F /* MyFriendVC.swift */; };
 		134F5B4F23EC70F900570569 /* BioVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134F5B4E23EC70F900570569 /* BioVC.swift */; };
 		134F5B5123EDFD4D00570569 /* PostVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134F5B5023EDFD4D00570569 /* PostVC.swift */; };
+		13904DBD241699C5001D0599 /* FeedVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13904DBC241699C5001D0599 /* FeedVC.swift */; };
 		13AEAD3223E1E0FC00757BE8 /* HomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13AEAD3123E1E0FC00757BE8 /* HomeVC.swift */; };
 		13B83BE123EEF5D800A20AFB /* EditVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B83BE023EEF5D800A20AFB /* EditVC.swift */; };
 		13B83BE423F1C34300A20AFB /* NoPicCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B83BE223F1C34200A20AFB /* NoPicCell.swift */; };
@@ -49,6 +50,7 @@
 		134D0A2A241554BF0070853F /* MyFriendVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyFriendVC.swift; sourceTree = "<group>"; };
 		134F5B4E23EC70F900570569 /* BioVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BioVC.swift; sourceTree = "<group>"; };
 		134F5B5023EDFD4D00570569 /* PostVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostVC.swift; sourceTree = "<group>"; };
+		13904DBC241699C5001D0599 /* FeedVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedVC.swift; sourceTree = "<group>"; };
 		13AEAD3123E1E0FC00757BE8 /* HomeVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeVC.swift; sourceTree = "<group>"; };
 		13B83BE023EEF5D800A20AFB /* EditVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditVC.swift; sourceTree = "<group>"; };
 		13B83BE223F1C34200A20AFB /* NoPicCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoPicCell.swift; sourceTree = "<group>"; };
@@ -109,6 +111,7 @@
 				130B49D323FD9AEC004BC9C0 /* GuestVC.swift */,
 				134D0A202412F31E0070853F /* NotificationsVC.swift */,
 				134D0A2A241554BF0070853F /* MyFriendVC.swift */,
+				13904DBC241699C5001D0599 /* FeedVC.swift */,
 				D36ED4E923DEB8F600EB5DCE /* Helper.swift */,
 				D36ED4EF23DEBE0600EB5DCE /* ApiClient.swift */,
 				13B83BE223F1C34200A20AFB /* NoPicCell.swift */,
@@ -210,6 +213,7 @@
 				13F6715F23D75DCD005B3A31 /* AppDelegate.swift in Sources */,
 				134D0A2724154D340070853F /* MyFriendCell.swift in Sources */,
 				D36ED4EC23DEB8F600EB5DCE /* Helper.swift in Sources */,
+				13904DBD241699C5001D0599 /* FeedVC.swift in Sources */,
 				134D0A1F2410E7B20070853F /* RecommendedFriendCell.swift in Sources */,
 				D36ED4EB23DEB8F600EB5DCE /* LoginVC.swift in Sources */,
 				134D0A212412F31E0070853F /* NotificationsVC.swift in Sources */,

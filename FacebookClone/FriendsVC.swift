@@ -93,7 +93,7 @@ class FriendsVC: UIViewController, UISearchBarDelegate {
     @IBOutlet weak var searchTableView: UITableView!
     @IBOutlet weak var friendsTableView: UITableView!
     
-    lazy var refreshControl: UIRefreshControl = {
+    lazy private var refreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action:
                      #selector(FriendsVC.handleRefresh(_:)),

@@ -107,6 +107,24 @@ class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePick
     var skip = 0
     var limit = 4
     
+    lazy private var refreshControlHome: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action:
+                     #selector(HomeVC.handleRefresh(_:)),
+                                 for: UIControl.Event.valueChanged)
+        refreshControl.tintColor = UIColor.red
+        
+        return refreshControl
+    }()
+    
+    @objc func handleRefresh(_ refreshControl: UIRefreshControl) {
+        
+        loadUser()
+        loadMyFriends()
+        loadPosts(offset: skip, limit: limit)
+
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         navigationController?.setNavigationBarHidden(true, animated: true)
@@ -115,7 +133,7 @@ class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePick
     override func viewDidLoad() {
         super.viewDidLoad()
 
-//        overrideUserInterfaceStyle = .dark
+        tableView.addSubview(refreshControlHome)
         configureProfileImageView()
         loadUser()
         loadMyFriends()
@@ -143,6 +161,10 @@ class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePick
     }
     
     func loadUser() {
+        if refreshControlHome.isRefreshing {
+            refreshControlHome.endRefreshing()
+        }
+        
         guard let firstName = Helper.getUserDetails()?.firstName,
         let lastName = Helper.getUserDetails()?.lastName,
         let coverImageUrl = Helper.getUserDetails()?.cover,
@@ -524,7 +546,7 @@ class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePick
         
        }
 
-   /* override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
 //        let picture = posts[indexPath.row]
             
         
@@ -553,13 +575,13 @@ class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePick
      loadMore(offset: skip, limit: limit) // network request to get more data
      }
         }
-    }*/
+    }
     
        func loadPosts(offset: Int, limit: Int) {
         
            guard let id = Helper.getUserDetails()?.id else { return }
 
-           ApiClient.shared.getPosts(id: id, offset: String(offset), limit: String(limit)) { (response:userPostResponse?, error) in
+        ApiClient.shared.getPosts(action: "", id: id, offset: String(offset), limit: String(limit)) { (response:userPostResponse?, error) in
              DispatchQueue.main.async {
                if error != nil {
 //                   Helper.showAlert(title: "Error", message: error!.localizedDescription, in: self)
@@ -568,7 +590,7 @@ class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePick
                 
                    print("posts == \(response!)")
                     self.posts.removeAll(keepingCapacity: false)
-                self.liked.removeAll(keepingCapacity: false)
+                    self.liked.removeAll(keepingCapacity: false)
                 
                    for object in response!.posts {
                     let post = Post(postId: String(object.id), postUserId: String(object.user_id), postText: object.text!, postPicture: object.picture!, postdateCreated: object.date_created, userFirstName: object.firstName, userLastName: object.lastName, userCover: object.cover!, userAvatar: object.avatar!, liked: object.liked ?? 0)
@@ -594,7 +616,7 @@ class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePick
             isLoading = true
             guard let id = Helper.getUserDetails()?.id else { return }
 
-            ApiClient.shared.getPosts(id: id, offset: String(offset), limit: String(limit)) { (response:userPostResponse?, error) in
+            ApiClient.shared.getPosts(action: "", id: id, offset: String(offset), limit: String(limit)) { (response:userPostResponse?, error) in
                 if error != nil {
                     self.isLoading = false
                         return
@@ -735,6 +757,10 @@ class HomeVC: UITableViewController, UINavigationControllerDelegate, UIImagePick
     }
     
     func loadMyFriends() {
+        if refreshControlHome.isRefreshing {
+            refreshControlHome.endRefreshing()
+        }
+        
         guard let currentUserId = Helper.getUserDetails()?.id else {
             return
         }

@@ -56,6 +56,7 @@ class PicCell: UITableViewCell {
                             self.postImageView.image = image
                         }
                     }
+                    return
                 }
                 
                 if let data = data {
